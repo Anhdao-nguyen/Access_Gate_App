@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Access Gate System - All Requests</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/images/logo.png" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e63223",
+                        "background-light": "#fbf8f7",
+                        "background-dark": "#1f1a19",
+                        "text-main": "#2d2422",
+                        "text-sub": "#5c5250",
+                        "border-color": "#e8e2e0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        .form-checkbox:checked {
+            background-color: #e63223;
+            border-color: #e63223
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px
+        }
+        .table-row-hover:hover {
+            background-color: rgba(230, 50, 35, 0.05);
+            border-color: rgba(230, 50, 35, 0.2);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased overflow-x-hidden">
+    <div class="relative flex min-h-screen w-full flex-col">
+        <!-- ========== GLOBAL HEADER ========== -->
+        <header
+            class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-border-color bg-white dark:bg-[#24261a] px-4 lg:px-6 h-[68px] shadow-sm">
+            <!-- LEFT: Logo + Brand + Page Name -->
+            <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-9 h-9 rounded-lg shrink-0">
+                    <img src="/assets/images/logo.png" alt="Intersnack" class="h-8 w-auto object-contain" />
+                </div>
+                <div class="hidden sm:block w-px h-8 bg-border-color"></div>
+                <div class="flex flex-col justify-center min-w-0">
+                    <h1
+                        class="text-base font-bold leading-tight tracking-tight text-text-main dark:text-white truncate">
+                        Access Gate System
+                    </h1>
+                    <p class="text-xs font-medium text-text-sub dark:text-gray-400 truncate">
+                        All Requests
+                    </p>
+                </div>
+            </div>
+
+            <!-- CENTER: Date & Time -->
+            <div
+                class="hidden lg:flex items-center gap-2 px-4 py-2 bg-background-light dark:bg-[#2a2d1e] rounded-full border border-border-color">
+                <span class="material-symbols-outlined !text-lg text-text-sub">calendar_today</span>
+                <span class="text-sm font-semibold text-text-main dark:text-white" id="header-date">Mon, Jan 20</span>
+                <span class="w-px h-4 bg-border-color mx-1"></span>
+                <span class="material-symbols-outlined !text-lg text-text-sub">schedule</span>
+                <span class="text-sm font-bold text-primary" id="header-time">09:42</span>
+            </div>
+
+            <!-- RIGHT: Actions + User Profile -->
+            <div class="flex items-center gap-3 md:gap-4">
+                <button
+                    class="hidden md:flex items-center justify-center size-10 rounded-lg bg-background-light dark:bg-[#2a2d1e] border border-border-color hover:border-primary hover:bg-primary/5 transition-all"
+                    title="Help">
+                    <span class="material-symbols-outlined !text-xl text-text-sub hover:text-primary">help</span>
+                </button>
+                <button
+                    class="hidden md:flex items-center justify-center size-10 rounded-lg bg-background-light dark:bg-[#2a2d1e] border border-border-color hover:border-primary hover:bg-primary/5 transition-all relative"
+                    title="Notifications">
+                    <span
+                        class="material-symbols-outlined !text-xl text-text-sub hover:text-primary">notifications</span>
+                    <span
+                        class="absolute -top-1 -right-1 size-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+                </button>
+                <div class="w-px h-8 bg-border-color"></div>
+                <div class="flex items-center gap-3 cursor-pointer group" data-open-profile>
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-semibold text-text-main dark:text-white leading-tight">Admin User</p>
+                        <p class="text-xs text-text-sub">Security Manager</p>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-border-color group-hover:ring-primary group-hover:scale-105 transition-all"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkIETe0nx6serWlZSHNCb-fPbFfejUNyNhHkg_ewUpIPZGzxYgeo94s3fatn6ANAIvJuehTqeC5CmS8MIwsHcLgh3Gbyw1HcB4NH7_NKrH3YNlNkNrkDisK0z3XpZpeBoK40f0UcyAW40BFNfYNcFPrWuzOWESQ0I9AkiuHpFYMg2e1xD_BcxoOcCm2m3aGLNeA_80CA2FL07KYXrDFy3R4O26zVYSjv22KjTt2OPPDxaCHbgwn9BAlMUoccRp6Fp9AMR7IPO_0FWN");'>
+                        </div>
+                        <div
+                            class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-[#24261a]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Header Date/Time Script -->
+        <script>
+            function updateHeaderDateTime() {
+                const now = new Date();
+                const dateEl = document.getElementById('header-date');
+                const timeEl = document.getElementById('header-time');
+                if (dateEl) {
+                    dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                }
+                if (timeEl) {
+                    timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                }
+            }
+            updateHeaderDateTime();
+            setInterval(updateHeaderDateTime, 60000);
+        </script>
+
+        <!-- ========== MAIN CONTENT ========== -->
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="flex flex-1 justify-center py-5 px-4 md:px-10 lg:px-20">
+                <div class="layout-content-container flex flex-col max-w-[1400px] flex-1">
+
+                    <!-- Page Header -->
+                    <div class="flex flex-wrap justify-between items-end gap-3 pb-6 border-b border-border-color mb-6">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-center gap-2 text-text-sub text-sm font-medium mb-1">
+                                <a class="hover:text-primary transition-colors" href="/">Dashboard</a>
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                                <span class="text-primary">All Requests</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary !text-3xl">assignment</span>
+                                <h1
+                                    class="text-text-main dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">
+                                    All Requests
+                                </h1>
+                            </div>
+                            <p class="text-text-sub dark:text-gray-400 text-base font-normal leading-normal max-w-2xl">
+                                Monitor and manage all requests across sites
+                            </p>
+                        </div>
+                        <button id="export-btn"
+                            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white dark:bg-gray-800 border border-border-color text-text-main dark:text-white text-sm font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <span class="material-symbols-outlined mr-2 text-[20px]">download</span>
+                            <span class="truncate">Export CSV</span>
+                        </button>
+                    </div>
+
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div
+                            class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-5 border border-blue-200 dark:border-blue-800">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="p-2 bg-blue-600 rounded-lg">
+                                    <span class="material-symbols-outlined text-white !text-2xl">today</span>
+                                </div>
+                                <div>
+                                    <p class="text-4xl font-bold text-blue-900 dark:text-blue-200" id="kpi-today">24</p>
+                                    <p class="text-xs font-semibold text-blue-700 dark:text-blue-400 uppercase mt-1">
+                                        Today</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 rounded-xl p-5 border border-yellow-200 dark:border-yellow-800">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="p-2 bg-yellow-600 rounded-lg">
+                                    <span class="material-symbols-outlined text-white !text-2xl">schedule</span>
+                                </div>
+                                <div>
+                                    <p class="text-4xl font-bold text-yellow-900 dark:text-yellow-200" id="kpi-pending">
+                                        12</p>
+                                    <p
+                                        class="text-xs font-semibold text-yellow-700 dark:text-yellow-400 uppercase mt-1">
+                                        Pending</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-5 border border-green-200 dark:border-green-800">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="p-2 bg-green-600 rounded-lg">
+                                    <span class="material-symbols-outlined text-white !text-2xl">check_circle</span>
+                                </div>
+                                <div>
+                                    <p class="text-4xl font-bold text-green-900 dark:text-green-200" id="kpi-approved">8
+                                    </p>
+                                    <p class="text-xs font-semibold text-green-700 dark:text-green-400 uppercase mt-1">
+                                        Approved</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-xl p-5 border border-red-200 dark:border-red-800">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="p-2 bg-red-600 rounded-lg">
+                                    <span class="material-symbols-outlined text-white !text-2xl">cancel</span>
+                                </div>
+                                <div>
+                                    <p class="text-4xl font-bold text-red-900 dark:text-red-200" id="kpi-rejected">2</p>
+                                    <p class="text-xs font-semibold text-red-700 dark:text-red-400 uppercase mt-1">
+                                        Rejected</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="bg-white dark:bg-[#24261a] rounded-xl shadow-sm border border-border-color p-5 mb-6">
+                        <!-- Search Box -->
+                        <div class="mb-4">
+                            <div class="relative">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-sub">search</span>
+                                <input type="text" id="search-input"
+                                    placeholder="Search by Request ID, Visitor, Company, Phone, Plate..."
+                                    class="w-full h-12 pl-12 pr-4 border border-border-color rounded-lg bg-background-light dark:bg-gray-800 text-text-main dark:text-white placeholder:text-text-sub focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
+                            </div>
+                        </div>
+
+                        <!-- Filter Dropdowns -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+                            <select id="filter-site"
+                                class="h-10 px-3 border border-border-color rounded-lg bg-white dark:bg-gray-800 text-text-main dark:text-white text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="all">All Sites</option>
+                                <option value="long_an">Long An Plant</option>
+                                <option value="tay_ninh">Tay Ninh Plant</option>
+                                <option value="phan_thiet">Phan Thiet Plant</option>
+                            </select>
+                            <select id="filter-type"
+                                class="h-10 px-3 border border-border-color rounded-lg bg-white dark:bg-gray-800 text-text-main dark:text-white text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="all">All Types</option>
+                                <option value="visitor">Visitors</option>
+                                <option value="contractor">Contractors</option>
+                                <option value="goods">Goods In/Out</option>
+                                <option value="tools">Tools & Equipment</option>
+                            </select>
+                            <select id="filter-status"
+                                class="h-10 px-3 border border-border-color rounded-lg bg-white dark:bg-gray-800 text-text-main dark:text-white text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="checked_in">Checked In</option>
+                                <option value="checked_out">Checked Out</option>
+                            </select>
+                            <input type="date" id="filter-from"
+                                class="h-10 px-3 border border-border-color rounded-lg bg-white dark:bg-gray-800 text-text-main dark:text-white text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                            <input type="date" id="filter-to"
+                                class="h-10 px-3 border border-border-color rounded-lg bg-white dark:bg-gray-800 text-text-main dark:text-white text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        </div>
+
+                        <!-- Active Filters & Reset -->
+                        <div class="flex items-center justify-between">
+                            <div id="active-filters" class="flex flex-wrap gap-2">
+                                <!-- Filter chips will be inserted here -->
+                            </div>
+                            <button id="reset-filters"
+                                class="text-sm font-semibold text-primary hover:text-primary/80 transition-colors">
+                                Reset Filters
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Data Table -->
+                    <div
+                        class="bg-white dark:bg-[#24261a] rounded-xl shadow-sm border border-border-color overflow-hidden mb-6">
+                        <!-- Table Container -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full" id="requests-table">
+                                <thead class="bg-gray-50 dark:bg-gray-800 border-b border-border-color">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-bold text-text-sub uppercase tracking-wider cursor-pointer hover:text-primary"
+                                            data-sort="id">
+                                            Request ID <span
+                                                class="material-symbols-outlined !text-sm align-middle">unfold_more</span>
+                                        </th>
+                                        <th class="px-4 py-3 text-left text-xs font-bold text-text-sub uppercase tracking-wider cursor-pointer hover:text-primary"
+                                            data-sort="created">
+                                            Created <span
+                                                class="material-symbols-outlined !text-sm align-middle">unfold_more</span>
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-text-sub uppercase tracking-wider">
+                                            Site</th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-text-sub uppercase tracking-wider">
+                                            Type</th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-text-sub uppercase tracking-wider">
+                                            Requester</th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-text-sub uppercase tracking-wider">
+                                            Subject</th>
+                                        <th class="px-4 py-3 text-left text-xs font-bold text-text-sub uppercase tracking-wider cursor-pointer hover:text-primary"
+                                            data-sort="scheduled">
+                                            Scheduled <span
+                                                class="material-symbols-outlined !text-sm align-middle">unfold_more</span>
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-text-sub uppercase tracking-wider">
+                                            Status</th>
+                                        <th
+                                            class="px-4 py-3 text-center text-xs font-bold text-text-sub uppercase tracking-wider">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body" class="divide-y divide-border-color">
+                                    <!-- Rows will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="loading-state" class="hidden p-8">
+                            <div class="animate-pulse space-y-3">
+                                <div class="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                                <div class="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                                <div class="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="empty-state" class="hidden text-center py-16">
+                            <div
+                                class="inline-flex items-center justify-center size-20 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400 mb-4">
+                                <span class="material-symbols-outlined !text-5xl">assignment</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-text-main dark:text-white mb-2">No requests found</h3>
+                            <p class="text-sm text-text-sub dark:text-gray-400 mb-4">Try adjusting your filters or
+                                search term</p>
+                            <button onclick="document.getElementById('reset-filters').click()"
+                                class="px-4 py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                                Reset Filters
+                            </button>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div id="pagination" class="border-t border-border-color p-4 flex items-center justify-between">
+                            <div class="text-sm text-text-sub">
+                                Showing <span id="page-start">1</span>-<span id="page-end">20</span> of <span
+                                    id="total-count">156</span> requests
+                            </div>
+                            <div class="flex gap-2" id="pagination-buttons">
+                                <!-- Pagination buttons will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Drawer Script -->
+    <script src="/js/user-profile.js"></script>
+    <script src="/js/user-profile-modal.js"></script>
+
+    <!-- Quick Navigation Menu -->
+    <script src="/js/quick-navigation.js"></script>
+
+    <!-- All Requests Page Script -->
+    <script src="/js/all-requests.js"></script>
+</body>
+
+</html>

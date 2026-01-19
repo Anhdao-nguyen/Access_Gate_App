@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Access Gate System - Visit Request</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/images/logo.png" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e63223",
+                        "background-light": "#fbf8f7",
+                        "background-dark": "#1f1a19",
+                        "text-main": "#2d2422",
+                        "text-sub": "#5c5250",
+                        "border-color": "#e8e2e0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        .form-checkbox:checked {
+            background-color: #e63223;
+            border-color: #e63223
+        }
+        ::-webkit-scrollbar {
+            width: 8px
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px
+        }
+        .form-input:not(:placeholder-shown):invalid, .form-select:not(:placeholder-shown):invalid, .form-textarea:not(:placeholder-shown):invalid {
+            border-color: #ef4444;
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem 1rem;
+            padding-right: 2.5rem
+        }
+        .form-input:not(:placeholder-shown):valid, .form-select:not(:placeholder-shown):valid, .form-textarea:not(:placeholder-shown):valid {
+            border-color: #e63223
+        }
+        select:required:invalid {
+            color: #9ca3af
+        }
+        option[value=""][disabled] {
+            display: none
+        }
+        .group:hover .group-hover\:text-primary {
+            color: #e63223
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased overflow-x-hidden">
+    <div class="relative flex min-h-screen w-full flex-col">
+        <!-- ========== GLOBAL HEADER - Option A ========== -->
+        <header
+            class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-border-color bg-white dark:bg-[#24261a] px-4 lg:px-6 h-[68px] shadow-sm">
+            <!-- LEFT: Logo + Brand + Page Name -->
+            <div class="flex items-center gap-3">
+                <!-- Company Logo (placeholder - replace src with actual logo) -->
+                <div class="flex items-center justify-center w-9 h-9 rounded-lg shrink-0">
+                    <img src="/assets/images/logo.png" alt="Intersnack" class="h-8 w-auto object-contain" />
+                </div>
+                <!-- Divider -->
+                <div class="hidden sm:block w-px h-8 bg-border-color"></div>
+                <!-- App Name + Page Name -->
+                <div class="flex flex-col justify-center min-w-0">
+                    <h1
+                        class="text-base font-bold leading-tight tracking-tight text-text-main dark:text-white truncate">
+                        Access Gate System
+                    </h1>
+                    <p class="text-xs font-medium text-text-sub dark:text-gray-400 truncate" data-page-name>
+                        Visit Request
+                    </p>
+                </div>
+            </div>
+
+            <!-- CENTER: Date & Time (hidden on mobile) -->
+            <div
+                class="hidden lg:flex items-center gap-2 px-4 py-2 bg-background-light dark:bg-[#2a2d1e] rounded-full border border-border-color">
+                <span class="material-symbols-outlined !text-lg text-text-sub">calendar_today</span>
+                <span class="text-sm font-semibold text-text-main dark:text-white" id="header-date">Mon, Jan 20</span>
+                <span class="w-px h-4 bg-border-color mx-1"></span>
+                <span class="material-symbols-outlined !text-lg text-text-sub">schedule</span>
+                <span class="text-sm font-bold text-primary" id="header-time">09:42</span>
+            </div>
+
+            <!-- RIGHT: Actions + User Profile -->
+            <div class="flex items-center gap-3 md:gap-4">
+                <!-- Help Button (hidden on mobile) -->
+                <button
+                    class="hidden md:flex items-center justify-center size-10 rounded-lg bg-background-light dark:bg-[#2a2d1e] border border-border-color hover:border-primary hover:bg-primary/5 transition-all"
+                    title="Help">
+                    <span class="material-symbols-outlined !text-xl text-text-sub hover:text-primary">help</span>
+                </button>
+                <!-- Notifications -->
+                <button
+                    class="hidden md:flex items-center justify-center size-10 rounded-lg bg-background-light dark:bg-[#2a2d1e] border border-border-color hover:border-primary hover:bg-primary/5 transition-all relative"
+                    title="Notifications">
+                    <span
+                        class="material-symbols-outlined !text-xl text-text-sub hover:text-primary">notifications</span>
+                    <span
+                        class="absolute -top-1 -right-1 size-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+                </button>
+                <!-- Divider -->
+                <div class="w-px h-8 bg-border-color"></div>
+                <!-- User Profile -->
+                <div class="flex items-center gap-3 cursor-pointer group" data-open-profile>
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-semibold text-text-main dark:text-white leading-tight">Admin User</p>
+                        <p class="text-xs text-text-sub">Security Manager</p>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-border-color group-hover:ring-primary group-hover:scale-105 transition-all"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkIETe0nx6serWlZSHNCb-fPbFfejUNyNhHkg_ewUpIPZGzxYgeo94s3fatn6ANAIvJuehTqeC5CmS8MIwsHcLgh3Gbyw1HcB4NH7_NKrH3YNlNkNrkDisK0z3XpZpeBoK40f0UcyAW40BFNfYNcFPrWuzOWESQ0I9AkiuHpFYMg2e1xD_BcxoOcCm2m3aGLNeA_80CA2FL07KYXrDFy3R4O26zVYSjv22KjTt2OPPDxaCHbgwn9BAlMUoccRp6Fp9AMR7IPO_0FWN");'>
+                        </div>
+                        <div
+                            class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-[#24261a]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- ========== END GLOBAL HEADER ========== -->
+
+        <!-- Header Date/Time Script -->
+        <script>
+            function updateHeaderDateTime() {
+                const now = new Date();
+                const dateEl = document.getElementById('header-date');
+                const timeEl = document.getElementById('header-time');
+                if (dateEl) {
+                    dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                }
+                if (timeEl) {
+                    timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                }
+            }
+            updateHeaderDateTime();
+            setInterval(updateHeaderDateTime, 60000);
+        </script>
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="flex flex-1 justify-center py-5 px-4 md:px-10 lg:px-20">
+                <div
+                    class="layout-content-container flex flex-col max-w-[1024px] flex-1 bg-white dark:bg-[#24261a] rounded-xl shadow-sm border border-border-color overflow-hidden">
+                    <div
+                        class="flex flex-wrap justify-between items-end gap-3 p-6 md:p-8 border-b border-border-color bg-gray-50/50 dark:bg-[#2a2d20]">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-center gap-2 text-text-sub text-sm font-medium mb-1">
+                                <a class="hover:text-primary transition-colors" href="/">Dashboard</a>
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                                <span class="text-primary">Create Request</span>
+                            </div>
+                            <h1
+                                class="text-text-main dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">
+                                Create Visit Request Form</h1>
+                            <p class="text-text-sub dark:text-gray-400 text-base font-normal leading-normal max-w-2xl">
+                                Complete the information below to register a factory visitor. Fields marked with <span
+                                    class="text-red-500">*</span> are mandatory.
+                            </p>
+                        </div>
+                        <button
+                            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white dark:bg-gray-800 border border-border-color text-text-main dark:text-white text-sm font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <span class="material-symbols-outlined mr-2 text-[20px]">policy</span>
+                            <span class="truncate">Entry Policy</span>
+                        </button>
+                    </div>
+                    <form class="flex flex-col p-6 md:p-8 gap-8">
+                        <div id="visitor-section-wrapper">
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="bg-primary/10 p-2 rounded-lg text-primary">
+                                    <span class="material-symbols-outlined">person</span>
+                                </div>
+                                <h2
+                                    class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                                    Visitor Information</h2>
+                            </div>
+
+                            <!-- Container for Visitor Cards -->
+                            <div id="visitor-list" class="flex flex-col gap-6">
+                                <!-- Visitor 1 (Template) -->
+                                <div class="visitor-card group/visitor relative p-5 rounded-xl border border-border-color bg-gray-50/50 dark:bg-gray-800/30"
+                                    data-index="0">
+                                    <div
+                                        class="flex justify-between items-center mb-4 border-b border-border-color pb-2">
+                                        <h3 class="text-text-main dark:text-white text-lg font-bold visitor-title">
+                                            Visitor 1</h3>
+                                        <!-- Remove button holder (empty for V1) -->
+                                        <div class="visitor-action"></div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <label class="flex flex-col flex-1 group">
+                                            <p
+                                                class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                                Full Name <span class="text-red-500">*</span></p>
+                                            <div class="relative">
+                                                <input
+                                                    class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                                    placeholder="Enter full name" required="" type="text"
+                                                    name="visitors[0][fullName]" />
+                                                <span
+                                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">badge</span>
+                                                <span
+                                                    class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                                    enter the visitor's name</span>
+                                            </div>
+                                        </label>
+                                        <label class="flex flex-col flex-1 group">
+                                            <p
+                                                class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                                Company / Organization <span class="text-red-500">*</span></p>
+                                            <div class="relative">
+                                                <input
+                                                    class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                                    placeholder="Enter company name" required="" type="text"
+                                                    name="visitors[0][company]" />
+                                                <span
+                                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">business</span>
+                                                <span
+                                                    class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                                    enter the company name</span>
+                                            </div>
+                                        </label>
+                                        <label class="flex flex-col flex-1 group">
+                                            <p
+                                                class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                                ID Card / Passport</p>
+                                            <div class="relative">
+                                                <input
+                                                    class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                                    placeholder="Enter ID/Passport number" type="text"
+                                                    name="visitors[0][idCard]" />
+                                                <span
+                                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">fingerprint</span>
+                                            </div>
+                                        </label>
+                                        <label class="flex flex-col flex-1 group">
+                                            <p
+                                                class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                                Phone Number</p>
+                                            <div class="relative">
+                                                <input
+                                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                                    placeholder="Enter contact number" type="tel"
+                                                    name="visitors[0][phoneNumber]" />
+                                                <span
+                                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">call</span>
+                                            </div>
+                                        </label>
+                                        <label class="flex flex-col flex-1 group">
+                                            <p
+                                                class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                                Safety Equipment (PPE)</p>
+                                            <div
+                                                class="flex items-center gap-6 h-14 px-4 border border-border-color rounded-lg bg-background-light dark:bg-gray-800 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+                                                <label class="inline-flex items-center cursor-pointer select-none">
+                                                    <input type="checkbox" name="visitors[0][ppeHairnet]"
+                                                        class="form-checkbox size-5 rounded border-gray-300 text-primary focus:ring-primary/50 transition-all">
+                                                    <span
+                                                        class="ml-2 text-text-main dark:text-white font-medium">Hairnet</span>
+                                                </label>
+                                                <div class="h-6 w-px bg-border-color"></div>
+                                                <label class="inline-flex items-center cursor-pointer select-none">
+                                                    <input type="checkbox" name="visitors[0][ppeSafetyShoes]"
+                                                        class="check-safety-shoes form-checkbox size-5 rounded border-gray-300 text-primary focus:ring-primary/50 transition-all">
+                                                    <span class="ml-2 text-text-main dark:text-white font-medium">Safety
+                                                        Shoes</span>
+                                                </label>
+                                            </div>
+                                            <p class="text-xs text-text-sub mt-2">Note: Only select if the visitor
+                                                enters the factory area.</p>
+                                        </label>
+                                        <label class="flex flex-col flex-1 group">
+                                            <p
+                                                class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                                Shoe Size (If applicable)</p>
+                                            <div class="relative">
+                                                <select disabled name="visitors[0][shoeSize]"
+                                                    class="input-shoe-size form-select peer flex w-full min-w-0 flex-1 overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 p-[15px] pl-11 text-base font-normal leading-normal transition-all appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                                    <option value="" selected disabled>Select Size</option>
+                                                    <option value="36">Size 36</option>
+                                                    <option value="37">Size 37</option>
+                                                    <option value="38">Size 38</option>
+                                                    <option value="39">Size 39</option>
+                                                    <option value="40">Size 40</option>
+                                                    <option value="41">Size 41</option>
+                                                    <option value="42">Size 42</option>
+                                                    <option value="43">Size 43</option>
+                                                    <option value="44">Size 44</option>
+                                                    <option value="45">Size 45</option>
+                                                </select>
+                                                <span
+                                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">do_not_step</span>
+                                                <span
+                                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-text-sub pointer-events-none">expand_more</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add Visitor Button -->
+                            <div class="mt-6">
+                                <button type="button" id="btn-add-visitor"
+                                    class="w-full md:w-auto flex items-center justify-center gap-2 h-12 px-6 rounded-lg border-2 border-dashed border-primary/50 text-primary bg-primary/5 hover:bg-primary/10 hover:border-primary font-bold transition-all">
+                                    <span class="material-symbols-outlined">add_circle</span>
+                                    <span>Add Another Visitor</span>
+                                </button>
+                            </div>
+                        </div>
+                        <hr class="border-border-color" />
+                        <div>
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="bg-primary/10 p-2 rounded-lg text-primary">
+                                    <span class="material-symbols-outlined">calendar_clock</span>
+                                </div>
+                                <h2
+                                    class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                                    Visit Details</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Purpose <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <select
+                                            class="form-select peer flex w-full min-w-0 flex-1 overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 p-[15px] pl-11 text-base font-normal leading-normal transition-all appearance-none cursor-pointer"
+                                            required="" name="purpose">
+                                            <option disabled="" selected="" value="">Select purpose</option>
+                                            <option value="meeting">Business Meeting</option>
+                                            <option value="delivery">Delivery / Pickup</option>
+                                            <option value="inspection">Inspection / Audit</option>
+                                            <option value="interview">Interview</option>
+                                            <option value="contractor">Contractor Work</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">assignment_turned_in</span>
+                                        <span
+                                            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-text-sub pointer-events-none">expand_more</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            select the purpose</span>
+                                    </div>
+                                </label>
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Access Area <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <select
+                                            class="form-select peer flex w-full min-w-0 flex-1 overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 p-[15px] pl-11 text-base font-normal leading-normal transition-all appearance-none cursor-pointer"
+                                            required="" name="accessArea">
+                                            <option disabled="" selected="" value="">Select area</option>
+                                            <option value="Office">Office</option>
+                                            <option value="Operation area">Operation area</option>
+                                            <option value="Warehouse">Warehouse</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">apartment</span>
+                                        <span
+                                            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-text-sub pointer-events-none">expand_more</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            select access area</span>
+                                    </div>
+                                </label>
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Arrival Date &amp; Time <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <input
+                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                            required="" type="datetime-local" name="arrivalDateTime" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">event</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            select arrival time</span>
+                                    </div>
+                                </label>
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Number of Visitors</p>
+                                    <div class="relative">
+                                        <input
+                                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light/50 dark:bg-gray-800/50 focus:border-border-color h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all cursor-not-allowed"
+                                            id="visitor-count" min="1" type="number" value="1" readonly
+                                            name="visitorCount" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">group</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-border-color hidden" id="additional-guests-section">
+                                <h3 class="text-text-main dark:text-white text-lg font-bold mb-4">Additional Guests
+                                    Details</h3>
+                                <div class="space-y-4" id="guest-list">
+                                    <div
+                                        class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-background-light dark:bg-gray-800/50 rounded-lg border border-border-color">
+                                        <div class="flex flex-col gap-1">
+                                            <span class="text-xs font-bold text-primary uppercase">Guest 2</span>
+                                            <input
+                                                class="form-input rounded-lg border-border-color bg-white dark:bg-gray-700 h-11 text-sm"
+                                                placeholder="Full Name" type="text" />
+                                        </div>
+                                        <div class="flex flex-col gap-1">
+                                            <span class="text-xs font-bold text-primary uppercase"> </span>
+                                            <input
+                                                class="form-input rounded-lg border-border-color bg-white dark:bg-gray-700 h-11 text-sm"
+                                                placeholder="ID Card / Passport" type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border-border-color" />
+                        <div>
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="bg-primary/10 p-2 rounded-lg text-primary">
+                                    <span class="material-symbols-outlined">contact_emergency</span>
+                                </div>
+                                <h2
+                                    class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                                    Internal Contact</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <label class="flex flex-col flex-1 md:col-span-2 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Host / Contact Person <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <input
+                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                            placeholder="Search or enter employee name..." required="" type="text"
+                                            name="hostContact" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">person_search</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            enter the internal contact person</span>
+                                    </div>
+                                </label>
+                                <label class="flex flex-col flex-1 md:col-span-2 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Additional Notes</p>
+                                    <div class="relative">
+                                        <textarea
+                                            class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary min-h-[120px] placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                            placeholder="Enter special instructions, vehicle plate, or carried equipment..."></textarea>
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-[18px] text-text-sub group-focus-within:text-primary transition-colors">edit_note</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col-reverse md:flex-row items-center justify-end gap-4 pt-4 border-t border-border-color">
+                            <a href="/"
+                                class="w-full md:w-auto h-12 px-6 rounded-lg border border-border-color text-text-main dark:text-white font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center">
+                                Cancel
+                            </a>
+                            <button
+                                class="w-full md:w-auto h-12 px-8 rounded-lg bg-primary hover:bg-opacity-90 text-white font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                                type="submit">
+                                <span>Submit Request</span>
+                                <span class="material-symbols-outlined text-[20px]">send</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Drawer Script -->
+    <script src="/js/user-profile.js"></script>
+    <script src="/js/user-profile-modal.js"></script>
+
+    <!-- Quick Navigation Menu -->
+    <script src="/js/quick-navigation.js"></script>
+
+    <style></style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const visitorList = document.getElementById('visitor-list');
+            const addVisitorBtn = document.getElementById('btn-add-visitor');
+            const visitorCountInput = document.getElementById('visitor-count');
+            let visitorCount = 1;
+
+            // Initialize event listeners for the first visitor
+            initializeVisitorEvents(visitorList.firstElementChild);
+
+            addVisitorBtn.addEventListener('click', function () {
+                const maxVisitors = 10;
+                if (visitorCount >= maxVisitors) {
+                    alert('Maximum ' + maxVisitors + ' visitors allowed.');
+                    return;
+                }
+
+                visitorCount++;
+                const newIndex = visitorCount - 1;
+
+                // Clone the first visitor block
+                const template = visitorList.firstElementChild.cloneNode(true);
+                template.setAttribute('data-index', newIndex);
+
+                // Reset fields and update attributes
+                resetAndReindexVisitor(template, newIndex, visitorCount);
+
+                // Add remove button
+                addRemoveButton(template);
+
+                visitorList.appendChild(template);
+                updateVisitorCountDisplay();
+
+                // Initialize events for the new block
+                initializeVisitorEvents(template);
+            });
+
+            function initializeVisitorEvents(visitorElement) {
+                const shoesCheckbox = visitorElement.querySelector('.check-safety-shoes');
+                const shoeSizeSelect = visitorElement.querySelector('.input-shoe-size');
+
+                if (shoesCheckbox && shoeSizeSelect) {
+                    shoesCheckbox.addEventListener('change', function () {
+                        if (this.checked) {
+                            shoeSizeSelect.removeAttribute('disabled');
+                            shoeSizeSelect.focus();
+                        } else {
+                            shoeSizeSelect.setAttribute('disabled', '');
+                            shoeSizeSelect.value = '';
+                        }
+                    });
+                }
+            }
+
+            function resetAndReindexVisitor(element, index, displayCount) {
+                // Update Title
+                const title = element.querySelector('.visitor-title');
+                if (title) title.textContent = 'Visitor ' + displayCount;
+
+                // Clear Inputs & Update Names
+                const inputs = element.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    // Update name attribute: visitors[0][fieldName] -> visitors[1][fieldName]
+                    const name = input.getAttribute('name');
+                    if (name) {
+                        input.setAttribute('name', name.replace(/visitors\[\d+\]/, `visitors[${index}]`));
+                    }
+
+                    // Reset values
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        input.checked = false;
+                    } else {
+                        input.value = '';
+                    }
+
+                    // Reset disabled state for shoe size
+                    if (input.classList.contains('input-shoe-size')) {
+                        input.setAttribute('disabled', '');
+                    }
+                });
+            }
+
+            function addRemoveButton(element) {
+                const actionContainer = element.querySelector('.visitor-action');
+                if (actionContainer) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'text-red-500 hover:text-red-700 font-medium text-sm flex items-center gap-1 transition-colors';
+                    btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">delete</span> Delete';
+                    btn.onclick = function () {
+                        element.remove();
+                        visitorCount--;
+                        reindexAllVisitors();
+                        updateVisitorCountDisplay();
+                    };
+                    actionContainer.appendChild(btn);
+                }
+            }
+
+            function reindexAllVisitors() {
+                const visitors = visitorList.querySelectorAll('.visitor-card');
+                let count = 0;
+                visitors.forEach((card, idx) => {
+                    count++;
+                    // Update Title
+                    const title = card.querySelector('.visitor-title');
+                    if (title) title.textContent = 'Visitor ' + count;
+
+                    // Update Names
+                    const inputs = card.querySelectorAll('input, select');
+                    inputs.forEach(input => {
+                        const name = input.getAttribute('name');
+                        if (name) {
+                            input.setAttribute('name', name.replace(/visitors\[\d+\]/, `visitors[${idx}]`));
+                        }
+                    });
+                });
+                visitorCount = count;
+            }
+
+            function updateVisitorCountDisplay() {
+                // Keep the "Visit Details" count in sync
+                visitorCountInput.value = visitorCount;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

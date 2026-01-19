@@ -1,0 +1,188 @@
+/**
+ * Quick Navigation Menu Component
+ * Access Gate System
+ */
+
+class QuickNavigation {
+    constructor() {
+        this.isOpen = false;
+        this.currentPage = this.getCurrentPage();
+        this.init();
+    }
+
+    init() {
+        this.createMenuHTML();
+        this.attachEventListeners();
+        this.setActivePage();
+    }
+
+    getCurrentPage() {
+        const path = window.location.pathname;
+        if (path === '/' || path.includes('home.html')) return 'home';
+        if (path.includes('request.html')) return 'request';
+        if (path.includes('checkin.html')) return 'checkin';
+        if (path.includes('all-requests.html')) return 'all-requests';
+        return 'home';
+    }
+
+    createMenuHTML() {
+        const menuHTML = `
+            <!-- Quick Navigation Menu -->
+            <div id="quick-nav-overlay" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 hidden transition-opacity duration-200 opacity-0"></div>
+            
+            <div id="quick-nav-container" class="fixed bottom-6 right-6 z-50">
+                <!-- Menu Items (Hidden by default) -->
+                <div id="quick-nav-items" class="flex flex-col gap-3 mb-3 transform transition-all duration-300 opacity-0 scale-95 pointer-events-none">
+                    <!-- All Requests -->
+                    <a href="/all-requests.html" 
+                        data-page="all-requests"
+                        class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-primary">
+                        <div class="size-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined !text-xl">assignment</span>
+                        </div>
+                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">All Requests</span>
+                    </a>
+
+                    <!-- Check-in Console -->
+                    <a href="/checkin.html" 
+                        data-page="checkin"
+                        class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-primary">
+                        <div class="size-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined !text-xl">fact_check</span>
+                        </div>
+                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">Check-in Console</span>
+                    </a>
+
+                    <!-- New Request -->
+                    <a href="/request.html" 
+                        data-page="request"
+                        class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-primary">
+                        <div class="size-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined !text-xl">add_circle</span>
+                        </div>
+                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">New Request</span>
+                    </a>
+
+                    <!-- Dashboard -->
+                    <a href="/" 
+                        data-page="home"
+                        class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-primary">
+                        <div class="size-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined !text-xl">home</span>
+                        </div>
+                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">Dashboard</span>
+                    </a>
+                </div>
+
+                <!-- Main FAB Button -->
+                <button id="quick-nav-fab" 
+                    class="size-14 rounded-full bg-primary text-white shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-200 flex items-center justify-center group relative">
+                    <span class="material-symbols-outlined !text-2xl transition-transform duration-200" id="fab-icon">apps</span>
+                    
+                    <!-- Tooltip -->
+                    <div class="absolute right-full mr-3 px-3 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        Quick Menu
+                    </div>
+                </button>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', menuHTML);
+    }
+
+    attachEventListeners() {
+        const fab = document.getElementById('quick-nav-fab');
+        const overlay = document.getElementById('quick-nav-overlay');
+        const items = document.getElementById('quick-nav-items');
+
+        // FAB click
+        fab.addEventListener('click', () => {
+            this.toggle();
+        });
+
+        // Overlay click to close
+        overlay.addEventListener('click', () => {
+            this.close();
+        });
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen) {
+                this.close();
+            }
+        });
+
+        // Close on navigation
+        document.querySelectorAll('.quick-nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                this.close();
+            });
+        });
+    }
+
+    toggle() {
+        if (this.isOpen) {
+            this.close();
+        } else {
+            this.open();
+        }
+    }
+
+    open() {
+        this.isOpen = true;
+        const overlay = document.getElementById('quick-nav-overlay');
+        const items = document.getElementById('quick-nav-items');
+        const icon = document.getElementById('fab-icon');
+
+        overlay.classList.remove('hidden');
+        setTimeout(() => overlay.classList.add('opacity-100'), 10);
+
+        items.classList.remove('pointer-events-none');
+        setTimeout(() => {
+            items.classList.remove('opacity-0', 'scale-95');
+            items.classList.add('opacity-100', 'scale-100');
+        }, 10);
+
+        icon.textContent = 'close';
+        icon.classList.add('rotate-90');
+    }
+
+    close() {
+        this.isOpen = false;
+        const overlay = document.getElementById('quick-nav-overlay');
+        const items = document.getElementById('quick-nav-items');
+        const icon = document.getElementById('fab-icon');
+
+        overlay.classList.remove('opacity-100');
+        items.classList.remove('opacity-100', 'scale-100');
+        items.classList.add('opacity-0', 'scale-95');
+
+        setTimeout(() => {
+            overlay.classList.add('hidden');
+            items.classList.add('pointer-events-none');
+        }, 200);
+
+        icon.textContent = 'apps';
+        icon.classList.remove('rotate-90');
+    }
+
+    setActivePage() {
+        // Highlight current page
+        document.querySelectorAll('.quick-nav-item').forEach(item => {
+            if (item.dataset.page === this.currentPage) {
+                item.classList.add('border-primary', 'bg-primary/5');
+                item.querySelector('.size-10').classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+            }
+        });
+    }
+}
+
+// Initialize on DOM ready
+let quickNavigation;
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        quickNavigation = new QuickNavigation();
+    });
+} else {
+    quickNavigation = new QuickNavigation();
+}

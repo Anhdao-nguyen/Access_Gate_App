@@ -1,0 +1,35 @@
+# ==============================================
+# GATEKEEPER APP - GIT IGNORE
+# ==============================================
+
+# --- DEPENDENCIES ---
+node_modules/
+
+# --- ENVIRONMENT & SECRETS ---
+.env
+.env.local
+.env.*.local
+
+# --- LOGS ---
+logs/
+*.log
+npm-debug.log*
+
+# --- OS FILES ---
+.DS_Store
+Thumbs.db
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- BUILD & CACHE ---
+dist/
+build/
+.cache/
+.temp/
+
+# --- VERCEL ---
+.vercel/

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Access Gate System - Check-in Console</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/images/logo.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e63223",
+                        "primary-dark": "#c92a1d",
+                        "background-light": "#fbf8f7",
+                        "background-dark": "#1f1a19",
+                        "text-main": "#2d2422",
+                        "text-sub": "#5c5250",
+                        "border-color": "#e8e2e0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.6rem", "xl": "0.8rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden h-screen flex flex-col selection:bg-primary/20">
+    <!-- ========== GLOBAL HEADER - Option A ========== -->
+    <header
+        class="flex flex-shrink-0 items-center justify-between whitespace-nowrap border-b border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 lg:px-6 h-[68px] shadow-sm z-30">
+        <!-- LEFT: Logo + Brand + Page Name -->
+        <div class="flex items-center gap-3">
+            <!-- Company Logo (placeholder - replace src with actual logo) -->
+            <div class="flex items-center justify-center w-9 h-9 rounded-lg shrink-0">
+                <img src="/assets/images/logo.png" alt="Intersnack" class="h-8 w-auto object-contain" />
+            </div>
+            <!-- Divider -->
+            <div class="hidden sm:block w-px h-8 bg-slate-200 dark:bg-slate-700"></div>
+            <!-- App Name + Page Name -->
+            <div class="flex flex-col justify-center min-w-0">
+                <h1 class="text-base font-bold leading-tight tracking-tight text-slate-900 dark:text-white truncate">
+                    Access Gate System
+                </h1>
+                <p class="text-xs font-medium text-slate-500 dark:text-slate-400 truncate" data-page-name>
+                    Check-in Console
+                </p>
+            </div>
+        </div>
+
+        <!-- CENTER: Date & Time (hidden on mobile) -->
+        <div
+            class="hidden lg:flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700">
+            <span class="material-symbols-outlined !text-lg text-slate-500">calendar_today</span>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-200" id="header-date">Mon, Jan 20</span>
+            <span class="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></span>
+            <span class="material-symbols-outlined !text-lg text-slate-500">schedule</span>
+            <span class="text-sm font-bold text-primary" id="header-time">09:42</span>
+        </div>
+
+        <!-- RIGHT: User Profile + Logout -->
+        <div class="flex items-center gap-3 md:gap-4">
+            <!-- Gate Post Badge (hidden on small screens) -->
+            <div
+                class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-full border border-emerald-200 dark:border-emerald-800">
+                <span class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400">Gate #01</span>
+            </div>
+            <!-- Divider -->
+            <div class="w-px h-8 bg-slate-200 dark:bg-slate-700"></div>
+            <!-- User Profile -->
+            <div class="flex items-center gap-3 cursor-pointer group" data-open-profile>
+                <div class="relative">
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-slate-200 dark:ring-slate-700 group-hover:ring-primary group-hover:scale-105 transition-all"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDCrHj0EtDiVME5IU_8CmR7Le2KE7v9FGV7XB_zMqZfGTPNYVA9sK_5e3MhqsH81txAxCTJYTcPa9lWTL5G3z1CwaA9eLaeQ6uZc9MJTPmDwbKm4neBGMFSLqSpkHx6Rbf6xbvp8XvsVYiNxNWDX-j-2Z8QwbBFddNt2ZHgCrItxLuw1vVm7hLcOeLCMQtj54IcXRwYBMz2QUDWmN0H11vIbtvIHxC9yxougAwl_7UnluVWJ5iah6pDt5H06jaYGBCjWWPF2qKRY336");'>
+                    </div>
+                    <div
+                        class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-slate-900">
+                    </div>
+                </div>
+                <div class="text-left hidden sm:block">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white leading-tight">Guard K. Nguyen</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Security Officer</p>
+                </div>
+            </div>
+            <!-- Logout Button -->
+            <button
+                class="flex items-center justify-center rounded-lg size-10 bg-slate-50 border border-slate-200 dark:bg-slate-800 dark:border-slate-700 text-slate-500 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all"
+                title="Logout">
+                <span class="material-symbols-outlined !text-xl">logout</span>
+            </button>
+        </div>
+    </header>
+    <!-- ========== END GLOBAL HEADER ========== -->
+
+    <!-- Header Date/Time Script -->
+    <script>
+        function updateHeaderDateTime() {
+            const now = new Date();
+            const dateEl = document.getElementById('header-date');
+            const timeEl = document.getElementById('header-time');
+            if (dateEl) {
+                dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            }
+            if (timeEl) {
+                timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            }
+        }
+        updateHeaderDateTime();
+        setInterval(updateHeaderDateTime, 60000);
+    </script>
+    <div class="flex flex-1 overflow-hidden">
+        <aside
+            class="w-full md:w-[420px] lg:w-[460px] flex flex-col bg-white dark:bg-slate-900 border-r border-slate-300 dark:border-slate-800 z-20 flex-shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)]">
+            <div class="p-5 pb-2 bg-slate-50/50 dark:bg-slate-900">
+                <div class="mb-5">
+                    <label class="flex flex-col w-full group">
+                        <span class="text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Search Visitor</span>
+                        <div
+                            class="flex w-full items-stretch rounded-xl h-14 shadow-sm border-2 border-slate-300 dark:border-slate-600 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 transition-all bg-white dark:bg-slate-800 overflow-hidden">
+                            <div class="text-slate-500 flex items-center justify-center pl-4 pr-3">
+                                <span class="material-symbols-outlined text-[28px]">search</span>
+                            </div>
+                            <input
+                                class="flex w-full min-w-0 flex-1 resize-none bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 px-0 text-lg font-medium focus:ring-0 focus:outline-none h-full"
+                                placeholder="QR, Name or ID..." value="" />
+                            <button
+                                class="flex items-center justify-center px-4 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-primary hover:bg-blue-50 transition-colors border-l border-slate-200 dark:border-slate-600">
+                                <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                            </button>
+                        </div>
+                    </label>
+                </div>
+                <div class="flex border-b-2 border-slate-200 dark:border-slate-700 gap-2">
+                    <button
+                        class="flex-1 flex flex-col items-center justify-center border-b-[4px] border-primary text-primary dark:text-white pb-3 pt-2 px-1 transition-all bg-primary/10 dark:bg-primary/20 rounded-t-lg">
+                        <p class="text-base font-bold tracking-tight">Expected (12)</p>
+                    </button>
+                    <button
+                        class="flex-1 flex flex-col items-center justify-center border-b-[4px] border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 pb-3 pt-2 px-1 transition-all rounded-t-lg">
+                        <p class="text-base font-bold tracking-tight">Checked In (45)</p>
+                    </button>
+                    <button
+                        class="flex-1 flex flex-col items-center justify-center border-b-[4px] border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 pb-3 pt-2 px-1 transition-all rounded-t-lg">
+                        <p class="text-base font-bold tracking-tight">History</p>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-3 space-y-3 bg-slate-50 dark:bg-slate-900/50">
+                <div
+                    class="flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border-2 border-primary shadow-md cursor-pointer relative group transition-all transform scale-[1.01]">
+                    <div class="absolute right-3 top-3">
+                        <span class="flex size-3 relative">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full size-3 bg-blue-500"></span>
+                        </span>
+                    </div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-xl size-16 flex-shrink-0 shadow-sm border border-slate-200 dark:border-slate-600"
+                        data-alt="Visitor portrait"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVbs7SEODhdr7n97OKsG4IdQXAVYnAUAuw_q6otw77ems0Xz6BLxz8QGeLA_40U9jKv6MckkHVb6hLcl2JtoVXzlmy0SZt2BjOXX6GmBg2Jysh4A33JOQFkTEYlc-1_NtuV8dSOcJ3irCWu5M2KGq4I_S0sgjaJWEEPaQHM3zn-RFO4oB8GjdwlY4B6UB-dUuNgfEyw9kQWzTcM_SuRXn_q49yRy03uI9jfWlHyCZhi44IRe0Q3XcPPSnSzkinSlhpSXlKBpgg6SNJ");'>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-1.5 pr-6">
+                            <h3 class="text-slate-900 dark:text-white font-extrabold text-lg truncate">Sarah Connor</h3>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span
+                                class="bg-blue-600 text-white dark:bg-blue-500 text-[11px] font-bold px-2.5 py-1 rounded shadow-sm uppercase tracking-wide">Ready</span>
+                            <span class="text-slate-600 dark:text-slate-300 text-sm font-medium truncate">ID:
+                                9821</span>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase truncate">Cyberdyne
+                            Systems</p>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 cursor-pointer transition-all shadow-sm hover:shadow-md group">
+                    <div class="bg-center bg-no-repeat bg-cover rounded-xl size-16 flex-shrink-0 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all border border-slate-100 dark:border-slate-700"
+                        data-alt="Visitor portrait male"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAnF8CFAUMJehSboEaqKXsxjmsAl8q42yc1YYVbBnMVmLxZtPmybz-JzeVowWIN4iGHEV9n8DX2QV1Lu_L_L2P6TSXBnLCOoZM7u9Bb5pyiyjYK8QFLynI37IvaiXarNlc2PagGnmHAS3_7ud_A4JcQtpkBIqG3dfX_o888qoJJLVXbzbBo5ckb7TjMfzHQ3RhxlV5D8_RNYRvUYqXCCpVJLQaj9vEF9D7bzquv8HlZRWRJD7Om8QvKxhoAcvTR8sT4uG_9gcNHsdyF");'>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-1.5">
+                            <h3
+                                class="text-slate-800 dark:text-slate-200 font-bold text-lg truncate group-hover:text-primary transition-colors">
+                                John Doe</h3>
+                            <span
+                                class="bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300 text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wide">Waitlist</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-slate-500 dark:text-slate-400 text-sm font-medium">10:30 AM</span>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase truncate">TechCorp
+                            Inc.</p>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 cursor-pointer transition-all shadow-sm hover:shadow-md group">
+                    <div
+                        class="flex items-center justify-center bg-slate-100 dark:bg-slate-700 text-slate-400 rounded-xl size-16 flex-shrink-0 border border-slate-100 dark:border-slate-700">
+                        <span class="material-symbols-outlined text-[32px]">person</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-1.5">
+                            <h3
+                                class="text-slate-800 dark:text-slate-200 font-bold text-lg truncate group-hover:text-primary transition-colors">
+                                Visitor #8922</h3>
+                            <span
+                                class="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wide">Pending</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-slate-500 dark:text-slate-400 text-sm font-medium">11:00 AM</span>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase truncate">Delivery
+                        </p>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center gap-4 p-4 rounded-xl bg-green-50/50 dark:bg-green-900/10 hover:bg-green-50 dark:hover:bg-green-900/20 border border-green-100 dark:border-green-800/30 cursor-pointer transition-all shadow-sm group">
+                    <div class="bg-center bg-no-repeat bg-cover rounded-xl size-16 flex-shrink-0 border border-green-200 dark:border-green-800"
+                        data-alt="Visitor portrait female"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDW3UNE8iSSIMYXjvQJKAvwYg90kBKKhvlW7SJnS1XftIkpSQ1-ZywWD2ue4BvpnqH-a-aGsdcuU9agccGWnIdzxR50vOEc1UW1jZwjfk7s_ZqFaFlxigD6Pv4XzcHsB3r8C2wWF856mNe-SsH78HuB0VVwtFedPzgI5P1aFlGBx6QqD6mSdi8ioENwtSV8pgGgi5n_tAWsewrsLQbDeuN_qprdOS03qkdDtl-eEwdbjNIZ5p_xcmtIaDbnix84sx1lnr0m75omBM5L");'>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-1.5">
+                            <h3 class="text-slate-800 dark:text-slate-200 font-bold text-lg truncate">Emily Chen</h3>
+                            <span
+                                class="bg-green-600 text-white dark:bg-green-600 dark:text-white text-[11px] font-bold px-2.5 py-1 rounded shadow-sm uppercase tracking-wide">Checked
+                                In</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-[16px] text-green-600">check_circle</span>
+                            <span class="text-sm font-bold text-green-700 dark:text-green-400">At 09:15</span>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase truncate">Food
+                            Supplier</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main
+            class="flex-1 flex flex-col relative overflow-y-auto bg-background-light dark:bg-background-dark scroll-smooth">
+            <div class="flex-1 p-6 lg:p-10 max-w-6xl mx-auto w-full">
+                <div
+                    class="w-full bg-green-100 dark:bg-green-900/20 border-l-8 border-green-500 dark:border-green-500 rounded-r-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between mb-8 shadow-sm">
+                    <div class="flex items-start gap-4 mb-4 sm:mb-0">
+                        <div
+                            class="bg-green-200 dark:bg-green-800 text-green-700 dark:text-green-200 p-2.5 rounded-full mt-0.5">
+                            <span class="material-symbols-outlined text-[28px]">verified_user</span>
+                        </div>
+                        <div>
+                            <h3 class="text-green-900 dark:text-green-100 font-extrabold text-xl">ACCESS GRANTED</h3>
+                            <p class="text-green-800 dark:text-green-300 font-medium mt-1">Information verified. Proceed
+                                with check-in.</p>
+                        </div>
+                    </div>
+                    <div class="text-left sm:text-right pl-14 sm:pl-0">
+                        <p class="text-xs text-green-800/70 dark:text-green-400 uppercase font-bold tracking-wider">
+                            Appointment ID</p>
+                        <p class="text-2xl font-mono font-black text-green-900 dark:text-white tracking-widest mt-0.5">
+                            #8A-992</p>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-300 dark:border-slate-700 overflow-hidden mb-8">
+                    <div class="flex flex-col md:flex-row gap-8 p-8 border-b border-slate-200 dark:border-slate-800">
+                        <div class="flex-shrink-0 flex flex-col items-center gap-4">
+                            <div class="size-40 rounded-2xl bg-center bg-cover border-[6px] border-slate-100 dark:border-slate-800 shadow-inner"
+                                data-alt="High resolution visitor portrait"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDMm1gkGm4x3cgduVDJffG2LB9u0mTXgi3ruMzVawTYcghaufBmwHUivPEFOS576R6gcanNH1qTw6EVwSpxTSZ9nPXqTGGMaIUS2Yop4FyjAUUsI_S03wPXExVUnT_GUZ0Ec2mF3xBDIUg27FoG5Bl3V9lncBgQqTW-TcCE5q1GT8FU6gix7mibXtoVEZ_OKGUjPq4WAIoerW6c5b6pdw24MTyb4Qa0JeXcUNydsRv6P2wsLZ5tiwomwTTnEqis-PyP-QrijyWPIhW4");'>
+                            </div>
+                            <span
+                                class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/30 text-sm font-bold text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
+                                <span class="material-symbols-outlined text-[18px]">verified</span> ID Verified
+                            </span>
+                        </div>
+                        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 align-content-center">
+                            <div>
+                                <label
+                                    class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-1.5 block">Full
+                                    Name</label>
+                                <p class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Sarah
+                                    Connor</p>
+                            </div>
+                            <div>
+                                <label
+                                    class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-1.5 block">Company
+                                    / Organization</label>
+                                <p class="text-xl font-bold text-slate-700 dark:text-slate-200">Cyberdyne Systems</p>
+                            </div>
+                            <div
+                                class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                <label class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-1 block">ID
+                                    Card / Passport</label>
+                                <p class="text-2xl font-mono font-bold text-slate-900 dark:text-white tracking-wide">
+                                    9821 **** ****</p>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <label
+                                    class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-1.5 block">Phone
+                                    Number</label>
+                                <p class="text-xl font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-slate-400">call</span>
+                                    +1 (555) 019-2834
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-slate-50 dark:bg-slate-800/40 p-6 flex flex-col md:flex-row items-center justify-between border-b border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center gap-5 mb-4 md:mb-0 w-full md:w-auto">
+                            <div
+                                class="size-14 rounded-full bg-white border-2 border-slate-200 flex items-center justify-center text-slate-700 font-black text-xl shadow-sm">
+                                DS
+                            </div>
+                            <div>
+                                <p
+                                    class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                                    Host / Contact</p>
+                                <div class="flex items-baseline gap-2">
+                                    <p class="text-lg font-bold text-slate-900 dark:text-white">Dr. Silberman</p>
+                                    <span class="text-sm text-slate-600 dark:text-slate-400">• Department Manager</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            class="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-400 dark:hover:bg-slate-600 transition-all">
+                            <span class="material-symbols-outlined text-[20px]">call</span> Call to Confirm
+                        </button>
+                    </div>
+                    <div class="p-8 bg-white dark:bg-slate-900">
+                        <h4
+                            class="text-base font-bold uppercase text-slate-900 dark:text-white mb-6 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
+                            <span class="material-symbols-outlined text-primary">edit_note</span>
+                            Additional Info
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Vehicle
+                                    Plate (Optional)</label>
+                                <div class="relative group">
+                                    <input
+                                        class="w-full h-14 rounded-xl border-2 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white px-5 text-xl font-mono uppercase font-bold focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400"
+                                        placeholder="VD: 29A-123.45" type="text" />
+                                    <button
+                                        class="absolute right-2 top-2 bottom-2 aspect-square flex items-center justify-center bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-500 hover:text-primary hover:border-primary transition-all shadow-sm"
+                                        title="Quét biển số">
+                                        <span class="material-symbols-outlined text-[24px]">center_focus_weak</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Capture
+                                    Visitor Photo</label>
+                                <button
+                                    class="w-full h-14 flex items-center justify-center gap-3 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 hover:text-primary hover:border-primary hover:bg-blue-50/50 dark:hover:bg-slate-800 transition-all group">
+                                    <div
+                                        class="bg-slate-200 dark:bg-slate-700 p-1.5 rounded-full group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                                    </div>
+                                    <span class="text-base font-bold">Open Camera</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Guard
+                                Notes</label>
+                            <textarea
+                                class="w-full rounded-xl border-2 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white px-4 py-3 focus:ring-4 focus:ring-primary/20 focus:border-primary resize-none transition-all"
+                                placeholder="Enter security notes (if any)..." rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-28"></div>
+            </div>
+            <div
+                class="sticky bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-6 py-5 shadow-[0_-8px_30px_rgba(0,0,0,0.1)] z-40">
+                <div class="max-w-6xl mx-auto flex gap-4 md:gap-6">
+                    <button
+                        class="flex-1 flex flex-col md:flex-row items-center justify-center h-16 bg-white dark:bg-transparent border-2 border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 rounded-2xl hover:bg-red-50 hover:border-red-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all group">
+                        <span
+                            class="material-symbols-outlined mr-2 text-[28px] group-hover:scale-110 transition-transform">block</span>
+                        <span class="font-extrabold text-lg md:text-xl">DENY ENTRY</span>
+                    </button>
+                    <button
+                        class="flex-[2] flex flex-col md:flex-row items-center justify-center h-16 bg-primary hover:bg-primary-dark text-white rounded-2xl shadow-lg hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all group">
+                        <span
+                            class="material-symbols-outlined mr-3 text-[32px] group-hover:scale-110 transition-transform">check_circle</span>
+                        <span class="font-extrabold text-lg md:text-xl tracking-wide">CONFIRM CHECK-IN</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- User Profile Drawer Script -->
+    <script src="/js/user-profile.js"></script>
+    <script src="/js/user-profile-modal.js"></script>
+
+    <!-- Quick Navigation Menu -->
+    <script src="/js/quick-navigation.js"></script>
+</body>
+
+</html>
