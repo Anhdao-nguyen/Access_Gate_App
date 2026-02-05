@@ -138,17 +138,11 @@
                 <!-- User Profile -->
                 <div class="flex items-center gap-3 cursor-pointer group" data-open-profile>
                     <div class="text-right hidden sm:block">
-                        <p class="text-sm font-semibold text-text-main dark:text-white leading-tight">Admin User</p>
-                        <p class="text-xs text-text-sub">Security Manager</p>
+                        <p class="text-sm font-semibold text-text-main dark:text-white leading-tight" data-user-name>
+                            Loading...</p>
+                        <p class="text-xs text-text-sub" data-user-role>User</p>
                     </div>
-                    <div class="relative">
-                        <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-border-color group-hover:ring-primary group-hover:scale-105 transition-all"
-                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkIETe0nx6serWlZSHNCb-fPbFfejUNyNhHkg_ewUpIPZGzxYgeo94s3fatn6ANAIvJuehTqeC5CmS8MIwsHcLgh3Gbyw1HcB4NH7_NKrH3YNlNkNrkDisK0z3XpZpeBoK40f0UcyAW40BFNfYNcFPrWuzOWESQ0I9AkiuHpFYMg2e1xD_BcxoOcCm2m3aGLNeA_80CA2FL07KYXrDFy3R4O26zVYSjv22KjTt2OPPDxaCHbgwn9BAlMUoccRp6Fp9AMR7IPO_0FWN");'>
-                        </div>
-                        <div
-                            class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-[#24261a]">
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </header>
@@ -197,6 +191,223 @@
                         </button>
                     </div>
                     <form class="flex flex-col p-6 md:p-8 gap-8">
+                        <div>
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="bg-primary/10 p-2 rounded-lg text-primary">
+                                    <span class="material-symbols-outlined">contact_emergency</span>
+                                </div>
+                                <h2
+                                    class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                                    Internal Contact</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Host / Contact Person <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <input id="host-contact-name"
+                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light/50 dark:bg-gray-800/50 focus:border-border-color h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all cursor-not-allowed"
+                                            placeholder="Loading..." readonly required type="text" name="hostContact"
+                                            value="Admin User" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">person_search</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            enter the internal contact person</span>
+                                    </div>
+                                    <p class="text-xs text-text-sub mt-2">Logged-in account information</p>
+                                </label>
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Email Host / Contact Person <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <input id="host-email"
+                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light/50 dark:bg-gray-800/50 focus:border-border-color h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all cursor-not-allowed"
+                                            placeholder="Loading..." readonly required type="email" name="hostEmail"
+                                            value="admin@intersnack.com" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">mail</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            enter a valid email address</span>
+                                    </div>
+                                    <p class="text-xs text-text-sub mt-2">Email from logged-in account</p>
+                                </label>
+
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Host's Manager Name</p>
+                                    <div class="relative">
+                                        <input id="host-manager-name"
+                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                            placeholder="Enter manager name (Vietnamese without accents)" type="text"
+                                            name="hostManagerName" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">supervisor_account</span>
+                                    </div>
+                                    <p class="text-xs text-text-sub mt-2">Manager of the host person</p>
+                                </label>
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Host's Manager Email</p>
+                                    <div class="relative">
+                                        <input id="host-manager-email"
+                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                            placeholder="Enter manager email" type="email" name="hostManagerEmail" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">mail</span>
+                                    </div>
+                                    <p class="text-xs text-text-sub mt-2">Email of the host's manager</p>
+                                </label>
+                                <label class="flex flex-col flex-1 md:col-span-2 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Additional Notes</p>
+                                    <div class="relative">
+                                        <textarea name="notes"
+                                            class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary min-h-[120px] placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                            placeholder="Enter special instructions, vehicle plate, or carried equipment..."></textarea>
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-[18px] text-text-sub group-focus-within:text-primary transition-colors">edit_note</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <hr class="border-border-color" />
+                        <div>
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="bg-primary/10 p-2 rounded-lg text-primary">
+                                    <span class="material-symbols-outlined">calendar_clock</span>
+                                </div>
+                                <h2
+                                    class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                                    Visit Details</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Purpose <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <input
+                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                            placeholder="Enter purpose of visit" required type="text" name="purpose" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">assignment_turned_in</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            select the purpose</span>
+                                    </div>
+                                </label>
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Access Area <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <select
+                                            class="form-select peer flex w-full min-w-0 flex-1 overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 p-[15px] pl-11 text-base font-normal leading-normal transition-all appearance-none cursor-pointer"
+                                            required="" name="accessArea">
+                                            <option disabled="" selected="" value="">Select area</option>
+                                            <option value="Office">Office</option>
+                                            <option value="Operation area">Operation area</option>
+                                            <option value="Warehouse">Warehouse</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">apartment</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            select access area</span>
+                                    </div>
+                                </label>
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Arrival Date &amp; Time <span class="text-red-500">*</span></p>
+                                    <div class="relative">
+                                        <input
+                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                            required="" type="datetime-local" name="arrivalDateTime" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">event</span>
+                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
+                                            select arrival time</span>
+                                    </div>
+                                </label>
+                                <label class="flex flex-col flex-1 group">
+                                    <p
+                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                        Number of Visitors</p>
+                                    <div class="relative">
+                                        <input
+                                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light/50 dark:bg-gray-800/50 focus:border-border-color h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all cursor-not-allowed"
+                                            id="visitor-count" min="1" type="number" value="1" readonly
+                                            name="visitorCount" />
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">group</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <!-- Assets & Vehicles Section -->
+                            <div class="mt-6 pt-6 border-t border-border-color">
+                                <h3 class="text-text-main dark:text-white text-base font-bold leading-normal pb-4">
+                                    Assets/ Vehicles to be consigned (if any)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Assets -->
+                                    <label class="flex flex-col flex-1 group">
+                                        <p
+                                            class="text-text-main dark:text-gray-200 text-sm font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                            Assets
+                                        </p>
+                                        <div class="relative">
+                                            <textarea
+                                                class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary min-h-[100px] placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                                placeholder="List assets..." name="assets"></textarea>
+                                            <span
+                                                class="material-symbols-outlined absolute left-3 top-[18px] text-text-sub group-focus-within:text-primary transition-colors">inventory_2</span>
+                                        </div>
+                                    </label>
+
+                                    <!-- Vehicles -->
+                                    <label class="flex flex-col flex-1 group">
+                                        <p
+                                            class="text-text-main dark:text-gray-200 text-sm font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
+                                            Vehicles
+                                        </p>
+                                        <div class="relative">
+                                            <textarea
+                                                class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary min-h-[100px] placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
+                                                placeholder="List vehicles..." name="vehicles"></textarea>
+                                            <span
+                                                class="material-symbols-outlined absolute left-3 top-[18px] text-text-sub group-focus-within:text-primary transition-colors">directions_car</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-6 border-t border-border-color hidden" id="additional-guests-section">
+                                <h3 class="text-text-main dark:text-white text-lg font-bold mb-4">Additional Guests
+                                    Details</h3>
+                                <div class="space-y-4" id="guest-list">
+                                    <div
+                                        class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-background-light dark:bg-gray-800/50 rounded-lg border border-border-color">
+                                        <div class="flex flex-col gap-1">
+                                            <span class="text-xs font-bold text-primary uppercase">Guest 2</span>
+                                            <input
+                                                class="form-input rounded-lg border-border-color bg-white dark:bg-gray-700 h-11 text-sm"
+                                                placeholder="Full Name" type="text" />
+                                        </div>
+                                        <div class="flex flex-col gap-1">
+                                            <span class="text-xs font-bold text-primary uppercase"> </span>
+                                            <input
+                                                class="form-input rounded-lg border-border-color bg-white dark:bg-gray-700 h-11 text-sm"
+                                                placeholder="ID Card / Passport" type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border-border-color" />
                         <div id="visitor-section-wrapper">
                             <div class="flex items-center gap-2 mb-6">
                                 <div class="bg-primary/10 p-2 rounded-lg text-primary">
@@ -323,8 +534,6 @@
                                                 </select>
                                                 <span
                                                     class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">do_not_step</span>
-                                                <span
-                                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-text-sub pointer-events-none">expand_more</span>
                                             </div>
                                         </label>
                                     </div>
@@ -338,152 +547,6 @@
                                     <span class="material-symbols-outlined">add_circle</span>
                                     <span>Add Another Visitor</span>
                                 </button>
-                            </div>
-                        </div>
-                        <hr class="border-border-color" />
-                        <div>
-                            <div class="flex items-center gap-2 mb-6">
-                                <div class="bg-primary/10 p-2 rounded-lg text-primary">
-                                    <span class="material-symbols-outlined">calendar_clock</span>
-                                </div>
-                                <h2
-                                    class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
-                                    Visit Details</h2>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <label class="flex flex-col flex-1 group">
-                                    <p
-                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
-                                        Purpose <span class="text-red-500">*</span></p>
-                                    <div class="relative">
-                                        <select
-                                            class="form-select peer flex w-full min-w-0 flex-1 overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 p-[15px] pl-11 text-base font-normal leading-normal transition-all appearance-none cursor-pointer"
-                                            required="" name="purpose">
-                                            <option disabled="" selected="" value="">Select purpose</option>
-                                            <option value="meeting">Business Meeting</option>
-                                            <option value="delivery">Delivery / Pickup</option>
-                                            <option value="inspection">Inspection / Audit</option>
-                                            <option value="interview">Interview</option>
-                                            <option value="contractor">Contractor Work</option>
-                                        </select>
-                                        <span
-                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">assignment_turned_in</span>
-                                        <span
-                                            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-text-sub pointer-events-none">expand_more</span>
-                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
-                                            select the purpose</span>
-                                    </div>
-                                </label>
-                                <label class="flex flex-col flex-1 group">
-                                    <p
-                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
-                                        Access Area <span class="text-red-500">*</span></p>
-                                    <div class="relative">
-                                        <select
-                                            class="form-select peer flex w-full min-w-0 flex-1 overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 p-[15px] pl-11 text-base font-normal leading-normal transition-all appearance-none cursor-pointer"
-                                            required="" name="accessArea">
-                                            <option disabled="" selected="" value="">Select area</option>
-                                            <option value="Office">Office</option>
-                                            <option value="Operation area">Operation area</option>
-                                            <option value="Warehouse">Warehouse</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                        <span
-                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">apartment</span>
-                                        <span
-                                            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-text-sub pointer-events-none">expand_more</span>
-                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
-                                            select access area</span>
-                                    </div>
-                                </label>
-                                <label class="flex flex-col flex-1 group">
-                                    <p
-                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
-                                        Arrival Date &amp; Time <span class="text-red-500">*</span></p>
-                                    <div class="relative">
-                                        <input
-                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
-                                            required="" type="datetime-local" name="arrivalDateTime" />
-                                        <span
-                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">event</span>
-                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
-                                            select arrival time</span>
-                                    </div>
-                                </label>
-                                <label class="flex flex-col flex-1 group">
-                                    <p
-                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
-                                        Number of Visitors</p>
-                                    <div class="relative">
-                                        <input
-                                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light/50 dark:bg-gray-800/50 focus:border-border-color h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all cursor-not-allowed"
-                                            id="visitor-count" min="1" type="number" value="1" readonly
-                                            name="visitorCount" />
-                                        <span
-                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">group</span>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="mt-6 pt-6 border-t border-border-color hidden" id="additional-guests-section">
-                                <h3 class="text-text-main dark:text-white text-lg font-bold mb-4">Additional Guests
-                                    Details</h3>
-                                <div class="space-y-4" id="guest-list">
-                                    <div
-                                        class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-background-light dark:bg-gray-800/50 rounded-lg border border-border-color">
-                                        <div class="flex flex-col gap-1">
-                                            <span class="text-xs font-bold text-primary uppercase">Guest 2</span>
-                                            <input
-                                                class="form-input rounded-lg border-border-color bg-white dark:bg-gray-700 h-11 text-sm"
-                                                placeholder="Full Name" type="text" />
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <span class="text-xs font-bold text-primary uppercase"> </span>
-                                            <input
-                                                class="form-input rounded-lg border-border-color bg-white dark:bg-gray-700 h-11 text-sm"
-                                                placeholder="ID Card / Passport" type="text" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="border-border-color" />
-                        <div>
-                            <div class="flex items-center gap-2 mb-6">
-                                <div class="bg-primary/10 p-2 rounded-lg text-primary">
-                                    <span class="material-symbols-outlined">contact_emergency</span>
-                                </div>
-                                <h2
-                                    class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
-                                    Internal Contact</h2>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <label class="flex flex-col flex-1 md:col-span-2 group">
-                                    <p
-                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
-                                        Host / Contact Person <span class="text-red-500">*</span></p>
-                                    <div class="relative">
-                                        <input
-                                            class="form-input peer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary h-14 placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
-                                            placeholder="Search or enter employee name..." required="" type="text"
-                                            name="hostContact" />
-                                        <span
-                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-sub group-focus-within:text-primary transition-colors">person_search</span>
-                                        <span class="mt-1 hidden text-sm text-red-500 peer-[:user-invalid]:block">Please
-                                            enter the internal contact person</span>
-                                    </div>
-                                </label>
-                                <label class="flex flex-col flex-1 md:col-span-2 group">
-                                    <p
-                                        class="text-text-main dark:text-gray-200 text-base font-medium leading-normal pb-2 group-focus-within:text-primary transition-colors">
-                                        Additional Notes</p>
-                                    <div class="relative">
-                                        <textarea
-                                            class="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-color bg-background-light dark:bg-gray-800 focus:border-primary min-h-[120px] placeholder:text-text-sub p-[15px] pl-11 text-base font-normal leading-normal transition-all"
-                                            placeholder="Enter special instructions, vehicle plate, or carried equipment..."></textarea>
-                                        <span
-                                            class="material-symbols-outlined absolute left-3 top-[18px] text-text-sub group-focus-within:text-primary transition-colors">edit_note</span>
-                                    </div>
-                                </label>
                             </div>
                         </div>
                         <div
@@ -504,6 +567,18 @@
             </div>
         </div>
     </div>
+
+    <!-- Auth Guard -->
+    <script src="/js/auth-guard.js"></script>
+
+    <!-- API Client (must load first) -->
+    <script src="/js/api-client.js"></script>
+
+    <!-- Request Form Handler -->
+    <script src="/js/pages/request-form.js"></script>
+
+    <!-- Remove Vietnamese Accents for Host's Manager Name -->
+    <script src="/js/remove-accents.js"></script>
 
     <!-- User Profile Drawer Script -->
     <script src="/js/user-profile.js"></script>
@@ -636,6 +711,40 @@
             function updateVisitorCountDisplay() {
                 // Keep the "Visit Details" count in sync
                 visitorCountInput.value = visitorCount;
+            }
+        });
+    </script>
+
+    <!-- Auto-populate Internal Contact from logged-in user -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const hostContactNameInput = document.getElementById('host-contact-name');
+            const hostEmailInput = document.getElementById('host-email');
+
+            try {
+                // Try to get logged-in user information from GateAPI
+                if (window.GateAPI && window.GateAPI.Auth) {
+                    const userResponse = await window.GateAPI.Auth.me();
+
+                    if (userResponse.success && userResponse.data) {
+                        const user = userResponse.data;
+
+                        // Populate Host Contact Name
+                        if (user.name || user.fullName || user.username) {
+                            hostContactNameInput.value = user.name || user.fullName || user.username;
+                        }
+
+                        // Populate Host Email
+                        if (user.email) {
+                            hostEmailInput.value = user.email;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log('Could not load user profile for auto-fill:', error);
+                // Keep default values if API call fails
+                // hostContactNameInput.value remains "Admin User"
+                // hostEmailInput.value remains "admin@intersnack.com"
             }
         });
     </script>

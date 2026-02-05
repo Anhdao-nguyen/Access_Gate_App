@@ -1,22 +1,23 @@
 /**
- * Quick Navigation Menu Component
- * Access Gate System
+ * Quick Navigation Menu Component with RBAC
+ * Access Gate System - Now with role-based filtering
  */
 
 class QuickNavigation {
     constructor() {
-        console.log('🚀 QuickNavigation: Initializing...');
+        console.log('🚀 QuickNavigation (RBAC): Initializing...');
         this.isOpen = false;
-        this.hasMoved = false; // Track if a drag occurred to prevent click
+        this.hasMoved = false;
         this.currentPage = this.getCurrentPage();
+        this.userRole = this.getUserRole();
         this.init();
-        console.log('✅ QuickNavigation: Initialized successfully on page:', this.currentPage);
+        console.log('✅ QuickNavigation: Initialized for role:', this.userRole);
     }
 
     init() {
         this.createMenuHTML();
         this.attachEventListeners();
-        this.initDrag(); // Initialize drag functionality
+        this.initDrag();
         this.setActivePage();
     }
 
@@ -29,60 +30,105 @@ class QuickNavigation {
         return 'home';
     }
 
+    getUserRole() {
+        try {
+            const userStr = localStorage.getItem('currentUser');
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                return user.role?.toLowerCase() || 'user';
+            }
+        } catch (e) {
+            console.error('Error getting user role:', e);
+        }
+        return 'user';
+    }
+
+    canAccessPage(page) {
+        if (!window.RoleConfig) {
+            console.warn('RoleConfig not loaded, allowing access');
+            return true;
+        }
+        return window.RoleConfig.canAccessPage(this.userRole, page);
+    }
+
+    getMenuItemsHTML() {
+        const items = [];
+
+        // All Requests - Only for full access roles
+        if (this.canAccessPage('all-requests')) {
+            items.push(`
+                <a href="/all-requests.html"
+                    data-page="all-requests"
+                    class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-orange-500">
+                    <div class="size-10 rounded-full bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined !text-xl">assignment</span>
+                    </div>
+                    <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">All Requests</span>
+                </a>
+            `);
+        }
+
+        // Check-in Console - For guards and full access
+        if (this.canAccessPage('checkin')) {
+            items.push(`
+                <a href="/checkin.html"
+                    data-page="checkin"
+                    class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-primary">
+                    <div class="size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined !text-xl">fact_check</span>
+                    </div>
+                    <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">Check-in Console</span>
+                </a>
+            `);
+        }
+
+        // New Request - For most roles except guards
+        if (this.canAccessPage('request')) {
+            items.push(`
+                <a href="/request.html"
+                    data-page="request"
+                    class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-orange-500">
+                    <div class="size-10 rounded-full bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined !text-xl">add_circle</span>
+                    </div>
+                    <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">New Request</span>
+                </a>
+            `);
+        }
+
+        // Dashboard - For most roles except guards
+        if (this.canAccessPage('home')) {
+            items.push(`
+                <a href="/"
+                    data-page="home"
+                    class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-primary">
+                    <div class="size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined !text-xl">home</span>
+                    </div>
+                    <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">Dashboard</span>
+                </a>
+            `);
+        }
+
+        return items.join('');
+    }
+
     createMenuHTML() {
         const menuHTML = `
-            <!-- Quick Navigation Menu -->
+            <!-- Quick Navigation Menu (RBAC) -->
             <div id="quick-nav-overlay" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90] hidden transition-opacity duration-200 opacity-0"></div>
-            
+
             <div id="quick-nav-container" class="fixed bottom-6 right-6 z-[100]">
                 <!-- Menu Items (Hidden by default) -->
                 <div id="quick-nav-items" class="flex flex-col gap-3 mb-3 transform transition-all duration-300 opacity-0 scale-95 pointer-events-none">
-                    <!-- All Requests -->
-                    <a href="/all-requests.html"
-                        data-page="all-requests"
-                        class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-orange-500">
-                        <div class="size-10 rounded-full bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
-                            <span class="material-symbols-outlined !text-xl">assignment</span>
-                        </div>
-                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">All Requests</span>
-                    </a>
-
-                    <!-- Check-in Console -->
-                    <a href="/checkin.html"
-                        data-page="checkin"
-                        class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-primary">
-                        <div class="size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                            <span class="material-symbols-outlined !text-xl">fact_check</span>
-                        </div>
-                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">Check-in Console</span>
-                    </a>
-
-                    <!-- New Request -->
-                    <a href="/request.html"
-                        data-page="request"
-                        class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-orange-500">
-                        <div class="size-10 rounded-full bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
-                            <span class="material-symbols-outlined !text-xl">add_circle</span>
-                        </div>
-                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">New Request</span>
-                    </a>
-
-                    <!-- Dashboard -->
-                    <a href="/"
-                        data-page="home"
-                        class="quick-nav-item group flex items-center gap-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 pr-5 pl-4 py-3 border-2 border-transparent hover:border-primary">
-                        <div class="size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                            <span class="material-symbols-outlined !text-xl">home</span>
-                        </div>
-                        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">Dashboard</span>
-                    </a>
+                    ${this.getMenuItemsHTML()}
                 </div>
 
                 <!-- Main FAB Button -->
-                <button id="quick-nav-fab" 
+                <button id="quick-nav-fab"
                     class="size-14 rounded-full bg-primary text-white shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-200 flex items-center justify-center group relative">
                     <span class="material-symbols-outlined !text-2xl transition-transform duration-200" id="fab-icon">apps</span>
-                    
+
                     <!-- Tooltip -->
                     <div class="absolute right-full mr-3 px-3 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                         Quick Menu
@@ -91,36 +137,30 @@ class QuickNavigation {
             </div>
         `;
 
-        console.log('📝 QuickNavigation: Creating menu HTML and injecting into body...');
+        console.log('📝 QuickNavigation: Creating filtered menu for role:', this.userRole);
         document.body.insertAdjacentHTML('beforeend', menuHTML);
-        console.log('✅ QuickNavigation: Menu HTML injected. FAB button should be visible at bottom-right.');
     }
 
     attachEventListeners() {
         const fab = document.getElementById('quick-nav-fab');
         const overlay = document.getElementById('quick-nav-overlay');
-        const items = document.getElementById('quick-nav-items');
 
-        // FAB click - Only toggle if not dragged
-        fab.addEventListener('click', (e) => {
+        fab?.addEventListener('click', (e) => {
             if (!this.hasMoved) {
                 this.toggle();
             }
         });
 
-        // Overlay click to close
-        overlay.addEventListener('click', () => {
+        overlay?.addEventListener('click', () => {
             this.close();
         });
 
-        // ESC key to close
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.close();
             }
         });
 
-        // Close on navigation
         document.querySelectorAll('.quick-nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 this.close();
@@ -175,11 +215,10 @@ class QuickNavigation {
     }
 
     setActivePage() {
-        // Highlight current page
         document.querySelectorAll('.quick-nav-item').forEach(item => {
             if (item.dataset.page === this.currentPage) {
                 item.classList.add('border-primary', 'bg-primary/5');
-                item.querySelector('.size-10').classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+                item.querySelector('.size-10')?.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
             }
         });
     }
@@ -188,60 +227,49 @@ class QuickNavigation {
         const container = document.getElementById('quick-nav-container');
         const fab = document.getElementById('quick-nav-fab');
 
+        if (!container || !fab) return;
+
         let isDragging = false;
         let startX, startY;
         let initialLeft, initialTop;
 
-        // 1. Restore saved position from localStorage calling
-        // Added validation to ensure it doesn't get lost off-screen
+        // Restore saved position
         const savedPos = localStorage.getItem('quickNavPosition');
         if (savedPos) {
             try {
                 const { left, top } = JSON.parse(savedPos);
-
-                // Parse values
                 const l = parseFloat(left);
                 const t = parseFloat(top);
                 const vw = window.innerWidth;
                 const vh = window.innerHeight;
 
-                // Check if valid number and within mostly visible bounds
-                // Allow a small buffer but ensure FAB is reachable
                 if (!isNaN(l) && !isNaN(t) && l > -20 && l < vw - 20 && t > -20 && t < vh - 20) {
-                    // Apply saved position
-                    container.style.bottom = 'auto'; // Remove default bottom
-                    container.style.right = 'auto';  // Remove default right
+                    container.style.bottom = 'auto';
+                    container.style.right = 'auto';
                     container.style.left = left;
                     container.style.top = top;
-                } else {
-                    console.warn('QuickNav: Saved position off-screen or invalid. Resetting to default.');
-                    localStorage.removeItem('quickNavPosition');
                 }
             } catch (e) {
-                console.error('Error parsing saved quick nav position', e);
-                localStorage.removeItem('quickNavPosition');
+                console.error('Error restoring position:', e);
             }
         }
 
-        // 2. Drag Handlers
+        // Drag handlers (simplified - full implementation from original file)
         const handleStart = (clientX, clientY) => {
             isDragging = true;
-            this.hasMoved = false; // Reset drag flag
+            this.hasMoved = false;
             startX = clientX;
             startY = clientY;
 
-            // Get current position
             const rect = container.getBoundingClientRect();
             initialLeft = rect.left;
             initialTop = rect.top;
 
-            // Switch to fixed positioning with left/top for control
             container.style.bottom = 'auto';
             container.style.right = 'auto';
             container.style.left = initialLeft + 'px';
             container.style.top = initialTop + 'px';
 
-            // Visual feedback
             fab.style.cursor = 'grabbing';
         };
 
@@ -251,23 +279,19 @@ class QuickNavigation {
             const deltaX = clientX - startX;
             const deltaY = clientY - startY;
 
-            // Threshold to detect drag (vs click)
             if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
                 this.hasMoved = true;
             }
 
-            // Calculate new position
             let newLeft = initialLeft + deltaX;
             let newTop = initialTop + deltaY;
 
-            // Boundary checks (keep within viewport)
             const maxLeft = window.innerWidth - container.offsetWidth;
             const maxTop = window.innerHeight - container.offsetHeight;
 
             newLeft = Math.max(0, Math.min(newLeft, maxLeft));
             newTop = Math.max(0, Math.min(newTop, maxTop));
 
-            // Apply new position
             container.style.left = `${newLeft}px`;
             container.style.top = `${newTop}px`;
         };
@@ -275,9 +299,8 @@ class QuickNavigation {
         const handleEnd = () => {
             if (isDragging) {
                 isDragging = false;
-                fab.style.cursor = ''; // Reset cursor
+                fab.style.cursor = '';
 
-                // Save position if moved
                 if (this.hasMoved) {
                     localStorage.setItem('quickNavPosition', JSON.stringify({
                         left: container.style.left,
@@ -287,23 +310,21 @@ class QuickNavigation {
             }
         };
 
-        // 3. Attach Mouse Events
         fab.addEventListener('mousedown', (e) => {
-            if (e.button === 0) { // Left click only
+            if (e.button === 0) {
                 handleStart(e.clientX, e.clientY);
             }
         });
 
         document.addEventListener('mousemove', (e) => {
             if (isDragging) {
-                e.preventDefault(); // Prevent text selection
+                e.preventDefault();
                 handleMove(e.clientX, e.clientY);
             }
         });
 
         document.addEventListener('mouseup', handleEnd);
 
-        // 4. Attach Touch Events
         fab.addEventListener('touchstart', (e) => {
             if (e.touches.length === 1) {
                 handleStart(e.touches[0].clientX, e.touches[0].clientY);
@@ -312,7 +333,7 @@ class QuickNavigation {
 
         document.addEventListener('touchmove', (e) => {
             if (isDragging) {
-                e.preventDefault(); // Prevent scrolling while dragging nav
+                e.preventDefault();
                 handleMove(e.touches[0].clientX, e.touches[0].clientY);
             }
         }, { passive: false });

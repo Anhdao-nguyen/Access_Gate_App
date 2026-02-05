@@ -231,6 +231,11 @@ class UserProfileDrawer {
         // Sign out
         document.getElementById('sign-out-btn')?.addEventListener('click', () => this.signOut());
 
+        // Global Logout Buttons (e.g. in Header)
+        document.querySelectorAll('[data-logout]').forEach(btn => {
+            btn.addEventListener('click', () => this.signOut());
+        });
+
         // Retry button
         document.getElementById('retry-load')?.addEventListener('click', () => this.loadUserData());
 
@@ -290,17 +295,19 @@ class UserProfileDrawer {
         document.getElementById('profile-error')?.classList.add('hidden');
 
         try {
-            // Simulate API call - Replace with actual API endpoint
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Fetch user data from API
+            const authResponse = await GateAPI.Auth.me();
+            const user = authResponse.data;
 
-            // Mock data - Replace with actual API response
             this.userData = {
-                name: 'Admin User',
-                fullName: 'Nguyen Van A',
-                position: 'Operations Manager',
-                plant: 'Long An Plant',
-                role: 'manager', // or 'user'
-                avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCkIETe0nx6serWlZSHNCb-fPbFfejUNyNhHkg_ewUpIPZGzxYgeo94s3fatn6ANAIvJuehTqeC5CmS8MIwsHcLgh3Gbyw1HcB4NH7_NKrH3YNlNkNrkDisK0z3XpZpeBoK40f0UcyAW40BFNfYNcFPrWuzOWESQ0I9AkiuHpFYMg2e1xD_BcxoOcCm2m3aGLNeA_80CA2FL07KYXrDFy3R4O26zVYSjv22KjTt2OPPDxaCHbgwn9BAlMUoccRp6Fp9AMR7IPO_0FWN'
+                id: user.id, // Save ID for filtering
+                name: user.username,
+                fullName: user.fullName,
+                position: user.position || 'Staff',
+                plant: user.factoryId === 'FAC001' ? 'Long An Plant' : (user.factoryId === 'FAC002' ? 'Tay Ninh' : 'Phan Thiet'),
+                factoryId: user.factoryId,
+                role: user.role, // Keep original role
+                avatar: user.avatar || 'https://lh3.googleusercontent.com/aida-public/AB6AXuCkIETe0nx6serWlZSHNCb-fPbFfejUNyNhHkg_ewUpIPZGzxYgeo94s3fatn6ANAIvJuehTqeC5CmS8MIwsHcLgh3Gbyw1HcB4NH7_NKrH3YNlNkNrkDisK0z3XpZpeBoK40f0UcyAW40BFNfYNcFPrWuzOWESQ0I9AkiuHpFYMg2e1xD_BcxoOcCm2m3aGLNeA_80CA2FL07KYXrDFy3R4O26zVYSjv22KjTt2OPPDxaCHbgwn9BAlMUoccRp6Fp9AMR7IPO_0FWN'
             };
 
             this.userRole = this.userData.role;
@@ -309,7 +316,8 @@ class UserProfileDrawer {
             this.updateProfileInfo();
 
             // Load role-specific content
-            if (this.userRole === 'manager') {
+            // Managers, Plant Managers, and Admins can see approvals
+            if (['manager', 'plant_manager', 'admin'].includes(this.userRole)) {
                 await this.loadApprovals();
             } else {
                 await this.loadRequests();
@@ -330,7 +338,18 @@ class UserProfileDrawer {
         document.getElementById('profile-fullname').textContent = this.userData.fullName;
         document.getElementById('profile-position').textContent = this.userData.position;
         document.getElementById('profile-plant').textContent = this.userData.plant;
-        document.getElementById('profile-role-text').textContent = this.userRole === 'manager' ? 'Plant Manager' : 'User';
+
+        // Use RoleConfig to format role display
+        let roleDisplay = this.userRole;
+        if (window.RoleConfig) {
+            roleDisplay = window.RoleConfig.formatRole(this.userRole);
+        } else {
+            // Fallback simplistic mapping
+            if (this.userRole === 'plant_manager') roleDisplay = 'Plant Manager';
+            else if (this.userRole === 'manager') roleDisplay = 'Department Manager';
+            else if (this.userRole === 'admin') roleDisplay = 'Admin';
+        }
+        document.getElementById('profile-role-text').textContent = roleDisplay;
 
         const avatar = document.getElementById('profile-avatar');
         if (avatar) {
@@ -342,28 +361,25 @@ class UserProfileDrawer {
         document.getElementById('manager-content')?.classList.remove('hidden');
 
         // Mock data - Replace with actual API
-        const approvals = [
-            {
-                id: 'REQ-2024-0123',
-                visitorName: 'Sarah Connor',
-                company: 'Cyberdyne Systems',
-                date: 'Jan 20, 2024',
-                time: '10:30 AM',
-                requestedBy: 'John Doe',
-                status: 'pending',
-                avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCVbs7SEODhdr7n97OKsG4IdQXAVYnAUAuw_q6otw77ems0Xz6BLxz8QGeLA_40U9jKv6MckkHVb6hLcl2JtoVXzlmy0SZt2BjOXX6GmBg2Jysh4A33JOQFkTEYlc-1_NtuV8dSOcJ3irCWu5M2KGq4I_S0sgjaJWEEPaQHM3zn-RFO4oB8GjdwlY4B6UB-dUuNgfEyw9kQWzTcM_SuRXn_q49yRy03uI9jfWlHyCZhi44IRe0Q3XcPPSnSzkinSlhpSXlKBpgg6SNJ'
-            },
-            {
-                id: 'REQ-2024-0124',
-                visitorName: 'John Wick',
-                company: 'Continental Hotel',
-                date: 'Jan 20, 2024',
-                time: '2:00 PM',
-                requestedBy: 'Jane Smith',
-                status: 'pending',
-                avatar: null
-            }
-        ];
+        // Fetch pending requests for my factory
+        const response = await GateAPI.Visitor.getAll({
+            factoryId: this.userData.factoryId,
+            status: 'pending'
+        });
+
+        const pendingVisitors = response.data || [];
+
+        // Map to UI format
+        const approvals = pendingVisitors.map(v => ({
+            id: v.id,
+            visitorName: v.visitors[0]?.fullName || 'Unknown',
+            company: v.visitors[0]?.company || 'N/A',
+            date: GateAPI.formatDate(v.scheduledDate),
+            time: v.scheduledTime,
+            requestedBy: v.host?.name || 'Unknown', // Ideally should be requester name, but host is often requester
+            status: v.status,
+            avatar: null // API doesn't return avatar yet
+        }));
 
         this.renderApprovals(approvals);
     }
@@ -431,30 +447,25 @@ class UserProfileDrawer {
         document.getElementById('user-content')?.classList.remove('hidden');
 
         // Mock data - Replace with actual API
-        const requests = [
-            {
-                id: 'REQ-2024-0156',
-                purpose: 'Visitor Meeting',
-                visitorName: 'Sarah Connor',
-                company: 'Cyberdyne Systems',
-                date: 'Jan 25, 2024',
-                time: '2:00 PM',
-                area: 'Office Area',
-                status: 'approved',
-                createdDate: 'Jan 18, 2024'
-            },
-            {
-                id: 'REQ-2024-0145',
-                purpose: 'Business Meeting',
-                visitorName: 'John Wick',
-                company: 'Continental Hotel',
-                date: 'Jan 22, 2024',
-                time: '10:00 AM',
-                area: 'Operation Area',
-                status: 'pending',
-                createdDate: 'Jan 17, 2024'
-            }
-        ];
+        // Fetch my requests
+        const response = await GateAPI.Visitor.getAll({
+            requestedBy: this.userData.id
+            // No status filter to see all
+        });
+
+        const myRequests = response.data || [];
+
+        const requests = myRequests.map(v => ({
+            id: v.id,
+            purpose: v.purpose,
+            visitorName: v.visitors[0]?.fullName || 'Unknown',
+            company: v.visitors[0]?.company || 'N/A',
+            date: GateAPI.formatDate(v.scheduledDate),
+            time: v.scheduledTime,
+            area: v.accessArea || 'Office',
+            status: v.status,
+            createdDate: GateAPI.formatDate(v.createdAt)
+        }));
 
         this.allRequests = requests;
         this.renderRequests(requests);
@@ -591,11 +602,24 @@ class UserProfileDrawer {
         alert(`View details for ${id}\n\n(Modal implementation coming next)`);
     }
 
-    signOut() {
+    async signOut() {
         if (confirm('Are you sure you want to sign out?')) {
-            console.log('Signing out...');
-            // Implement sign out logic
-            window.location.href = '/login.html';
+            try {
+                console.log('Signing out...');
+                if (window.GateAPI && GateAPI.Auth) {
+                    await GateAPI.Auth.logout();
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            } finally {
+                // Always clear local storage even if API call fails
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('quickNavPosition'); // Optional: reset UI state
+
+                // Redirect to login
+                window.location.href = '/login.html';
+            }
         }
     }
 }

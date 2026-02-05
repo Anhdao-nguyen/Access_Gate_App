@@ -16,53 +16,39 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap"
         rel="stylesheet" />
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#e63223",
-                        "background-light": "#fbf8f7",
-                        "background-dark": "#1f1a19",
-                        "text-primary-light": "#2d2422",
-                        "text-secondary-light": "#5c5250",
-                        "text-primary-dark": "#fdfcfc",
-                        "text-secondary-dark": "#a89f9d",
-                    },
-                    fontFamily: {
-                        "display": ["Inter", "Noto Sans", "sans-serif"],
-                        "body": ["Inter", "Noto Sans", "sans-serif"],
-                    },
-                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.5rem", "full": "9999px" },
-                },
-            },
-        }
-    </script>
+    <script src="/js/tailwind-config.js"></script>
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <!-- Auth Guard - must be before body -->
+    <script src="/js/auth-guard.js"></script>
 </head>
 
 <body
     class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark font-display antialiased min-h-screen flex flex-col">
-    <!-- ========== GLOBAL HEADER - Option A ========== -->
+    <!-- ========== GLOBAL HEADER - Responsive ========== -->
     <header
-        class="sticky top-0 z-50 w-full border-b border-[#e5e7eb] dark:border-[#3a3f2b] bg-white/95 dark:bg-background-dark/95 backdrop-blur-sm h-[68px]">
-        <div class="h-full mx-auto max-w-[1400px] flex items-center justify-between px-4 lg:px-6">
+        class="sticky top-0 z-50 w-full border-b border-[#e5e7eb] dark:border-[#3a3f2b] bg-white/95 dark:bg-background-dark/95 backdrop-blur-sm h-[60px] md:h-[68px] 3xl:h-[76px]">
+        <div
+            class="h-full mx-auto max-w-[1400px] 3xl:max-w-[1600px] 4xl:max-w-[1800px] flex items-center justify-between px-4 md:px-6 3xl:px-8">
             <!-- LEFT: Logo + Brand + Page Name -->
-            <div class="flex items-center gap-3">
-                <!-- Company Logo (placeholder - replace src with actual logo) -->
-                <div class="flex items-center justify-center w-9 h-9 rounded-lg shrink-0">
-                    <img src="/assets/images/logo.png" alt="Intersnack" class="h-8 w-auto object-contain" />
+            <div class="flex items-center gap-2 md:gap-3">
+                <!-- Company Logo -->
+                <div
+                    class="flex items-center justify-center w-8 h-8 md:w-9 md:h-9 3xl:w-10 3xl:h-10 rounded-lg shrink-0">
+                    <img src="/assets/images/logo.png" alt="Intersnack"
+                        class="h-7 md:h-8 3xl:h-9 w-auto object-contain" />
                 </div>
                 <!-- Divider -->
-                <div class="hidden sm:block w-px h-8 bg-[#e5e7eb] dark:bg-[#3a3f2b]"></div>
+                <div class="hidden sm:block w-px h-7 md:h-8 bg-[#e5e7eb] dark:bg-[#3a3f2b]"></div>
                 <!-- App Name + Page Name -->
                 <div class="flex flex-col justify-center min-w-0">
                     <h1
-                        class="text-base font-bold leading-tight tracking-tight text-text-primary-light dark:text-text-primary-dark truncate">
+                        class="text-sm md:text-base 3xl:text-lg font-bold leading-tight tracking-tight text-text-primary-light dark:text-text-primary-dark truncate">
                         Access Gate System
                     </h1>
-                    <p class="text-xs font-medium text-text-secondary-light dark:text-text-secondary-dark truncate"
+                    <p class="text-[10px] md:text-xs 3xl:text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark truncate"
                         data-page-name>
                         Home
                     </p>
@@ -103,19 +89,13 @@
                 <!-- User Profile -->
                 <div class="flex items-center gap-3 cursor-pointer group" data-open-profile>
                     <div class="text-right hidden sm:block">
-                        <p
-                            class="text-sm font-semibold text-text-primary-light dark:text-text-primary-dark leading-tight">
-                            Nguyễn Văn A</p>
-                        <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Security Manager</p>
+                        <p class="text-sm font-semibold text-text-primary-light dark:text-text-primary-dark leading-tight"
+                            data-user-name>
+                            Loading...</p>
+                        <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark" data-user-role>User
+                        </p>
                     </div>
-                    <div class="relative">
-                        <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-[#e5e7eb] dark:ring-[#3a3f2b] group-hover:ring-primary group-hover:scale-105 transition-all"
-                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDwwj5iCKexMQg1RUhrVvwUV9eP5YfnWkJFT3NehCSpDEgKhzTJdGlHTfo7YQXoRAFPMPO26b5ATA8NpLth-RwT0urlhAFSm7mgLIH3tahJgiTXuWZ_fJ_924SkXmi-H_2oUXfIt9Sn0Jt70ShZD-UtawLveYihO3jBhGqPEy5IgNDgZnh7d8ptACOJE9CesSPI0I-KYAo56-iw7pKCxcxGjHVfNqOttjDg3Oxawl7IfYZhpkcHRRhvBBGsU4ECZ8wbBYWPP6GScz8_");'>
-                        </div>
-                        <div
-                            class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-background-dark">
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -129,7 +109,12 @@
             const dateEl = document.getElementById('header-date');
             const timeEl = document.getElementById('header-time');
             if (dateEl) {
-                dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                // Format: Tue, 20/1/2026
+                const weekday = now.toLocaleDateString('en-US', { weekday: 'short' });
+                const day = now.getDate();
+                const month = now.getMonth() + 1; // 0-indexed
+                const year = now.getFullYear();
+                dateEl.textContent = `${weekday}, ${day}/${month}/${year}`;
             }
             if (timeEl) {
                 timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -139,156 +124,165 @@
         setInterval(updateHeaderDateTime, 60000);
     </script>
     <main class="flex-1 flex flex-col items-center w-full">
-        <div class="w-full max-w-[1400px] px-4 lg:px-10 py-6 lg:py-10 flex flex-col gap-8">
+        <!-- Container: responsive width for all screen sizes -->
+        <div
+            class="w-full max-w-[1400px] 3xl:max-w-[1600px] 4xl:max-w-[1800px] px-4 md:px-6 lg:px-10 3xl:px-12 py-6 lg:py-8 3xl:py-10 flex flex-col gap-6 lg:gap-8 3xl:gap-10">
+            <!-- Header Section -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div class="flex flex-col gap-2">
                     <p
-                        class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-bold uppercase tracking-wider">
+                        class="text-text-secondary-light dark:text-text-secondary-dark text-xs md:text-sm 3xl:text-base font-bold uppercase tracking-wider">
                         Overview</p>
-                    <h1 class="text-3xl md:text-4xl font-bold leading-tight">Hello, Admin User</h1>
-                    <p
-                        class="text-text-secondary-light dark:text-text-secondary-dark mt-1 flex items-center gap-2 text-base">
-                        <span class="material-symbols-outlined !text-xl text-primary">check_circle</span>
-                        System operational • <span class="text-primary font-bold">3 requests</span> pending approval.
-                    </p>
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl 3xl:text-5xl font-bold leading-tight" data-greeting>
+                        Hello, User
+                    </h1>
+
                 </div>
                 <div class="flex gap-3">
                     <a href="/checkin"
-                        class="flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors text-sm font-bold shadow-lg shadow-primary/20">
-                        <span class="material-symbols-outlined !text-[20px]">sensor_occupied</span>
-                        Check-in Console
+                        class="flex items-center justify-center gap-2 h-11 md:h-12 3xl:h-14 px-5 md:px-6 3xl:px-8 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors text-sm 3xl:text-base font-bold shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined !text-[20px] 3xl:!text-[24px]">sensor_occupied</span>
+                        Gate Check-in
                     </a>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <!-- Card 1: Visitors & Partners - Blue -->
-                <a class="group relative flex flex-col justify-between p-6 lg:p-8 h-auto min-h-[320px] rounded-3xl bg-white dark:bg-[#2c321a] border border-[#e5e7eb] dark:border-[#3a3f2b] shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/30 transition-all duration-300"
+            <!-- Module Cards Grid: 1 col mobile, 2 col tablet, 4 col desktop -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6 3xl:gap-8">
+                <!-- Card 1: Visitors & Partners - Orange -->
+                <a class="group relative flex flex-col justify-between p-5 md:p-6 lg:p-7 3xl:p-8 h-auto min-h-[280px] md:min-h-[300px] lg:min-h-[320px] 3xl:min-h-[360px] rounded-2xl lg:rounded-3xl bg-white dark:bg-[#2c321a] border border-[#e5e7eb] dark:border-[#3a3f2b] shadow-sm hover:shadow-xl hover:shadow-orange-500/10 hover:border-orange-500/30 transition-all duration-300"
                     href="/request">
-                    <div class="absolute top-5 right-5 size-4 rounded-full bg-red-500 animate-pulse ring-4 ring-red-100 dark:ring-red-900/30"
+                    <div class="absolute top-4 right-4 md:top-5 md:right-5 size-3 md:size-4 rounded-full bg-red-500 animate-pulse ring-4 ring-red-100 dark:ring-red-900/30"
                         title="Cần xử lý"></div>
-                    <div class="flex flex-col gap-6">
-                        <!-- Icon Container: 56x56, rounded-2xl, icon 28px -->
+                    <div class="flex flex-col gap-4 md:gap-5 lg:gap-6">
+                        <!-- Icon Container: responsive size -->
                         <div
-                            class="size-14 rounded-2xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 border border-blue-100 dark:border-blue-800/30">
-                            <span class="material-symbols-outlined !text-[28px] !font-light">badge</span>
+                            class="size-12 md:size-14 3xl:size-16 rounded-xl md:rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 border border-orange-100 dark:border-orange-800/30">
+                            <span
+                                class="material-symbols-outlined !text-[24px] md:!text-[28px] 3xl:!text-[32px] !font-light">badge</span>
                         </div>
                         <div>
                             <h3
-                                class="text-xl font-bold mb-2 text-text-primary-light dark:text-text-primary-dark group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                class="text-lg md:text-xl 3xl:text-2xl font-bold mb-1.5 md:mb-2 text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                                 Visitors &amp; Partners</h3>
                             <p
-                                class="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 leading-relaxed">
+                                class="text-xs md:text-sm 3xl:text-base text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 leading-relaxed">
                                 Register visitors, meeting partners and short-term work.</p>
                         </div>
                     </div>
                     <div
-                        class="flex items-center justify-between pt-5 mt-2 border-t border-dashed border-[#e5e7eb] dark:border-[#3a3f2b]">
+                        class="flex items-center justify-between pt-4 md:pt-5 mt-2 border-t border-dashed border-[#e5e7eb] dark:border-[#3a3f2b]">
                         <span
-                            class="text-sm font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Create
+                            class="text-xs md:text-sm 3xl:text-base font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Create
                             Request</span>
                         <div
-                            class="size-10 rounded-full bg-background-light dark:bg-[#363d21] flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            class="size-9 md:size-10 3xl:size-12 rounded-full bg-background-light dark:bg-[#363d21] flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
                             <span
-                                class="material-symbols-outlined !text-xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                                class="material-symbols-outlined !text-lg md:!text-xl 3xl:!text-2xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
                         </div>
                     </div>
                 </a>
-                <!-- Card 2: Contractors - Orange -->
-                <a class="group relative flex flex-col justify-between p-6 lg:p-8 h-auto min-h-[320px] rounded-3xl bg-white dark:bg-[#2c321a] border border-[#e5e7eb] dark:border-[#3a3f2b] shadow-sm hover:shadow-xl hover:shadow-orange-500/10 hover:border-orange-500/30 transition-all duration-300"
-                    href="#">
-                    <div class="flex flex-col gap-6">
-                        <!-- Icon Container: 56x56, rounded-2xl, icon 28px -->
+                <!-- Card 2: Contractors - Disabled -->
+                <a class="group relative flex flex-col justify-between p-5 md:p-6 lg:p-7 3xl:p-8 h-auto min-h-[280px] md:min-h-[300px] lg:min-h-[320px] 3xl:min-h-[360px] rounded-2xl lg:rounded-3xl bg-white dark:bg-[#2c321a] border border-[#e5e7eb] dark:border-[#3a3f2b] shadow-sm opacity-60 grayscale cursor-not-allowed transition-all duration-300"
+                    href="javascript:void(0)">
+                    <div class="flex flex-col gap-4 md:gap-5 lg:gap-6">
+                        <!-- Icon Container: responsive size -->
                         <div
-                            class="size-14 rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 border border-orange-100 dark:border-orange-800/30">
-                            <span class="material-symbols-outlined !text-[28px]">engineering</span>
+                            class="size-12 md:size-14 3xl:size-16 rounded-xl md:rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 border border-orange-100 dark:border-orange-800/30">
+                            <span
+                                class="material-symbols-outlined !text-[24px] md:!text-[28px] 3xl:!text-[32px]">engineering</span>
                         </div>
                         <div>
                             <h3
-                                class="text-xl font-bold mb-2 text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                                class="text-lg md:text-xl 3xl:text-2xl font-bold mb-1.5 md:mb-2 text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                                 Contractors</h3>
                             <p
-                                class="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 leading-relaxed">
+                                class="text-xs md:text-sm 3xl:text-base text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 leading-relaxed">
                                 Grant access for construction and long-term maintenance.</p>
                         </div>
                     </div>
                     <div
-                        class="flex items-center justify-between pt-5 mt-2 border-t border-dashed border-[#e5e7eb] dark:border-[#3a3f2b]">
+                        class="flex items-center justify-between pt-4 md:pt-5 mt-2 border-t border-dashed border-[#e5e7eb] dark:border-[#3a3f2b]">
                         <span
-                            class="text-sm font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Manage
+                            class="text-xs md:text-sm 3xl:text-base font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Manage
                             Contractors</span>
                         <div
-                            class="size-10 rounded-full bg-background-light dark:bg-[#363d21] flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            class="size-9 md:size-10 3xl:size-12 rounded-full bg-background-light dark:bg-[#363d21] flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
                             <span
-                                class="material-symbols-outlined !text-xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                                class="material-symbols-outlined !text-lg md:!text-xl 3xl:!text-2xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
                         </div>
                     </div>
                 </a>
-                <!-- Card 3: Goods In/Out (RCN) - Purple -->
-                <a class="group relative flex flex-col justify-between p-6 lg:p-8 h-auto min-h-[320px] rounded-3xl bg-white dark:bg-[#2c321a] border border-[#e5e7eb] dark:border-[#3a3f2b] shadow-sm hover:shadow-xl hover:shadow-purple-500/10 hover:border-purple-500/30 transition-all duration-300"
-                    href="#">
-                    <div class="flex flex-col gap-6">
-                        <!-- Icon Container: 56x56, rounded-2xl, icon 28px -->
+                <!-- Card 3: Goods In/Out (RCN) - Disabled -->
+                <a class="group relative flex flex-col justify-between p-5 md:p-6 lg:p-7 3xl:p-8 h-auto min-h-[280px] md:min-h-[300px] lg:min-h-[320px] 3xl:min-h-[360px] rounded-2xl lg:rounded-3xl bg-white dark:bg-[#2c321a] border border-[#e5e7eb] dark:border-[#3a3f2b] shadow-sm opacity-60 grayscale cursor-not-allowed transition-all duration-300"
+                    href="javascript:void(0)">
+                    <div class="flex flex-col gap-4 md:gap-5 lg:gap-6">
+                        <!-- Icon Container: responsive size -->
                         <div
-                            class="size-14 rounded-2xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 border border-purple-100 dark:border-purple-800/30">
-                            <span class="material-symbols-outlined !text-[28px] !font-light">local_shipping</span>
+                            class="size-12 md:size-14 3xl:size-16 rounded-xl md:rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 border border-orange-100 dark:border-orange-800/30">
+                            <span
+                                class="material-symbols-outlined !text-[24px] md:!text-[28px] 3xl:!text-[32px] !font-light">local_shipping</span>
                         </div>
                         <div>
                             <h3
-                                class="text-xl font-bold mb-2 text-text-primary-light dark:text-text-primary-dark group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                class="text-lg md:text-xl 3xl:text-2xl font-bold mb-1.5 md:mb-2 text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                                 Goods In/Out (RCN)</h3>
                             <p
-                                class="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 leading-relaxed">
+                                class="text-xs md:text-sm 3xl:text-base text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 leading-relaxed">
                                 Create RCN tickets, control good flows through gate.</p>
                         </div>
                     </div>
                     <div
-                        class="flex items-center justify-between pt-5 mt-2 border-t border-dashed border-[#e5e7eb] dark:border-[#3a3f2b]">
+                        class="flex items-center justify-between pt-4 md:pt-5 mt-2 border-t border-dashed border-[#e5e7eb] dark:border-[#3a3f2b]">
                         <span
-                            class="text-sm font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Create
+                            class="text-xs md:text-sm 3xl:text-base font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Create
                             RCN</span>
                         <div
-                            class="size-10 rounded-full bg-background-light dark:bg-[#363d21] flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            class="size-9 md:size-10 3xl:size-12 rounded-full bg-background-light dark:bg-[#363d21] flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
                             <span
-                                class="material-symbols-outlined !text-xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                                class="material-symbols-outlined !text-lg md:!text-xl 3xl:!text-2xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
                         </div>
                     </div>
                 </a>
-                <!-- Card 4: Tools & Equipment - Emerald -->
-                <a class="group relative flex flex-col justify-between p-6 lg:p-8 h-auto min-h-[320px] rounded-3xl bg-white dark:bg-[#2c321a] border border-[#e5e7eb] dark:border-[#3a3f2b] shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 transition-all duration-300"
-                    href="#">
-                    <div class="flex flex-col gap-6">
-                        <!-- Icon Container: 56x56, rounded-2xl, icon 28px -->
+                <!-- Card 4: Tools & Equipment - Disabled -->
+                <a class="group relative flex flex-col justify-between p-5 md:p-6 lg:p-7 3xl:p-8 h-auto min-h-[280px] md:min-h-[300px] lg:min-h-[320px] 3xl:min-h-[360px] rounded-2xl lg:rounded-3xl bg-white dark:bg-[#2c321a] border border-[#e5e7eb] dark:border-[#3a3f2b] shadow-sm opacity-60 grayscale cursor-not-allowed transition-all duration-300"
+                    href="javascript:void(0)">
+                    <div class="flex flex-col gap-4 md:gap-5 lg:gap-6">
+                        <!-- Icon Container: responsive size -->
                         <div
-                            class="size-14 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 border border-emerald-100 dark:border-emerald-800/30">
-                            <span class="material-symbols-outlined !text-[28px] !font-light">handyman</span>
+                            class="size-12 md:size-14 3xl:size-16 rounded-xl md:rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 border border-orange-100 dark:border-orange-800/30">
+                            <span
+                                class="material-symbols-outlined !text-[24px] md:!text-[28px] 3xl:!text-[32px] !font-light">handyman</span>
                         </div>
                         <div>
                             <h3
-                                class="text-xl font-bold mb-2 text-text-primary-light dark:text-text-primary-dark group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                class="text-lg md:text-xl 3xl:text-2xl font-bold mb-1.5 md:mb-2 text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                                 Tools &amp; Equipment</h3>
                             <p
-                                class="text-sm text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 leading-relaxed">
+                                class="text-xs md:text-sm 3xl:text-base text-text-secondary-light dark:text-text-secondary-dark line-clamp-3 leading-relaxed">
                                 Register equipment and tools entering/leaving factory.</p>
                         </div>
                     </div>
                     <div
-                        class="flex items-center justify-between pt-5 mt-2 border-t border-dashed border-[#e5e7eb] dark:border-[#3a3f2b]">
+                        class="flex items-center justify-between pt-4 md:pt-5 mt-2 border-t border-dashed border-[#e5e7eb] dark:border-[#3a3f2b]">
                         <span
-                            class="text-sm font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Register
+                            class="text-xs md:text-sm 3xl:text-base font-bold text-text-primary-light dark:text-text-primary-dark group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Register
                             Equipment</span>
                         <div
-                            class="size-10 rounded-full bg-background-light dark:bg-[#363d21] flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                            class="size-9 md:size-10 3xl:size-12 rounded-full bg-background-light dark:bg-[#363d21] flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
                             <span
-                                class="material-symbols-outlined !text-xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                                class="material-symbols-outlined !text-lg md:!text-xl 3xl:!text-2xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                <div class="lg:col-span-2 flex flex-col gap-5">
+            <!-- Recent Activity & Statistics Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8 3xl:gap-10">
+                <div class="lg:col-span-2 flex flex-col gap-4 md:gap-5">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-bold leading-tight tracking-tight">Recent Activity</h3>
-                        <a class="text-sm font-bold text-primary hover:text-primary/80 hover:underline" href="#">View
+                        <h3 class="text-lg md:text-xl 3xl:text-2xl font-bold leading-tight tracking-tight">Recent
+                            Activity</h3>
+                        <a class="text-xs md:text-sm 3xl:text-base font-bold text-primary hover:text-primary/80 hover:underline"
+                            href="/all-requests.html">View
                             all</a>
                     </div>
                     <div
@@ -402,9 +396,9 @@
                                 <span class="material-symbols-outlined text-primary !text-3xl">person_check</span>
                             </div>
                             <div>
-                                <p
-                                    class="text-4xl font-bold text-text-primary-light dark:text-text-primary-dark tracking-tight">
-                                    24</p>
+                                <p class="text-4xl font-bold text-text-primary-light dark:text-text-primary-dark tracking-tight"
+                                    data-stat="visitors-on-site">
+                                    --</p>
                                 <p
                                     class="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark mt-1">
                                     Visitors currently on site</p>
@@ -417,9 +411,9 @@
                                 <span class="material-symbols-outlined text-orange-500 !text-3xl">warning</span>
                             </div>
                             <div>
-                                <p
-                                    class="text-4xl font-bold text-text-primary-light dark:text-text-primary-dark tracking-tight">
-                                    2</p>
+                                <p class="text-4xl font-bold text-text-primary-light dark:text-text-primary-dark tracking-tight"
+                                    data-stat="overstay-alerts">
+                                    --</p>
                                 <p
                                     class="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark mt-1">
                                     Overstay alerts</p>
@@ -464,6 +458,10 @@
 
     <!-- Quick Navigation Menu -->
     <script src="/js/quick-navigation.js"></script>
+
+    <!-- API Client & Page Script -->
+    <script src="/js/api-client.js"></script>
+    <script src="/js/pages/home.js"></script>
 </body>
 
 </html>

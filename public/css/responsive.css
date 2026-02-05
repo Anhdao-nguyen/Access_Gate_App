@@ -1,0 +1,390 @@
+/* ==============================================
+   ACCESS GATE SYSTEM - RESPONSIVE DESIGN
+   ==============================================
+   Breakpoints:
+   - xs: < 480px (small phones)
+   - sm: 480px - 639px (large phones)
+   - md: 640px - 767px (small tablets)
+   - lg: 768px - 1023px (tablets, small laptops)
+   - xl: 1024px - 1279px (laptops)
+   - 2xl: 1280px - 1535px (desktops)
+   - 3xl: 1536px - 1919px (large desktops)
+   - 4xl: 1920px+ (ultra-wide, > 23 inch)
+   ============================================== */
+
+/* --- Base Reset for Responsive --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* --- Fluid Typography --- */
+/* Scale font size based on viewport width for large screens */
+@media (min-width: 1920px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+@media (min-width: 2560px) {
+    html {
+        font-size: 20px;
+    }
+}
+
+/* --- Container Widths --- */
+.container-responsive {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    .container-responsive {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-responsive {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container-responsive {
+        max-width: 1400px;
+    }
+}
+
+@media (min-width: 1536px) {
+    .container-responsive {
+        max-width: 1600px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .container-responsive {
+        max-width: 1800px;
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+
+/* --- Grid System for Cards --- */
+.grid-cards {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+    .grid-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid-cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 1920px) {
+    .grid-cards {
+        gap: 2rem;
+    }
+}
+
+/* --- Header Responsive --- */
+.header-responsive {
+    height: 60px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+    .header-responsive {
+        height: 68px;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .header-responsive {
+        height: 76px;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+/* --- Card Sizes --- */
+.card-module {
+    min-height: 280px;
+    padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .card-module {
+        min-height: 300px;
+        padding: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .card-module {
+        min-height: 320px;
+        padding: 1.75rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .card-module {
+        min-height: 360px;
+        padding: 2rem;
+    }
+}
+
+/* --- Icon Container Sizes --- */
+.icon-container {
+    width: 48px;
+    height: 48px;
+}
+
+@media (min-width: 768px) {
+    .icon-container {
+        width: 56px;
+        height: 56px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .icon-container {
+        width: 64px;
+        height: 64px;
+    }
+}
+
+/* --- Button Sizes --- */
+.btn-responsive {
+    height: 40px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+    .btn-responsive {
+        height: 44px;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .btn-responsive {
+        height: 48px;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .btn-responsive {
+        height: 52px;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* --- Form Input Sizes --- */
+.input-responsive {
+    height: 48px;
+    font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+    .input-responsive {
+        height: 52px;
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .input-responsive {
+        height: 56px;
+    }
+}
+
+/* --- Sidebar Widths (Check-in Console) --- */
+.sidebar-responsive {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .sidebar-responsive {
+        width: 380px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .sidebar-responsive {
+        width: 420px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .sidebar-responsive {
+        width: 460px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .sidebar-responsive {
+        width: 520px;
+    }
+}
+
+/* --- Main Content Area (Check-in Console) --- */
+.main-content-responsive {
+    flex: 1;
+    min-width: 0;
+}
+
+/* --- Table Responsive --- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+    min-width: 600px;
+}
+
+@media (min-width: 1024px) {
+    .table-responsive table {
+        min-width: auto;
+    }
+}
+
+/* --- Text Scaling --- */
+.text-title-responsive {
+    font-size: 1.5rem;
+    line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+    .text-title-responsive {
+        font-size: 1.875rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .text-title-responsive {
+        font-size: 2.25rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .text-title-responsive {
+        font-size: 2.5rem;
+    }
+}
+
+/* --- Spacing Utilities --- */
+.spacing-responsive {
+    padding: 1rem;
+}
+
+@media (min-width: 768px) {
+    .spacing-responsive {
+        padding: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .spacing-responsive {
+        padding: 2rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .spacing-responsive {
+        padding: 2.5rem;
+    }
+}
+
+/* --- Hide/Show Utilities --- */
+.hide-mobile {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .hide-mobile {
+        display: block;
+    }
+}
+
+.hide-tablet-up {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .hide-tablet-up {
+        display: none;
+    }
+}
+
+.show-large-only {
+    display: none;
+}
+
+@media (min-width: 1920px) {
+    .show-large-only {
+        display: block;
+    }
+}
+
+/* --- Touch-friendly targets for tablet --- */
+@media (max-width: 1023px) and (pointer: coarse) {
+    button,
+    a,
+    input[type="checkbox"],
+    input[type="radio"],
+    select {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* --- Print Styles --- */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .print-break {
+        page-break-before: always;
+    }
+}

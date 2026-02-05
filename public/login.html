@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Access Gate System - Login</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/images/logo.png" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e63223",
+                        "primary-dark": "#c92a1d",
+                        "background-light": "#fbf8f7",
+                        "background-dark": "#1f1a19",
+                        "text-main": "#2d2422",
+                        "text-sub": "#5c5250",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light min-h-screen flex items-center justify-center p-4 font-display">
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 bg-gradient-to-br from-primary/5 via-transparent to-orange-500/5 pointer-events-none">
+    </div>
+
+    <!-- Login Container -->
+    <div class="w-full max-w-md relative z-10">
+        <!-- Logo & Title -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-lg mb-6">
+                <img src="/assets/images/logo.png" alt="Intersnack" class="h-14 w-auto object-contain" />
+            </div>
+            <h1 class="text-3xl font-bold text-text-main mb-2">Access Gate System</h1>
+            <p class="text-text-sub">Sign in to your account</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <!-- Error Message (hidden by default) -->
+            <div id="error-message" class="hidden bg-red-50 border-l-4 border-red-500 p-4">
+                <div class="flex items-center">
+                    <span class="material-symbols-outlined text-red-500 mr-2">error</span>
+                    <p class="text-red-700 text-sm font-medium" id="error-text">Invalid credentials</p>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="login-form" class="p-8">
+                <!-- Username -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-text-main mb-2" for="username">
+                        Username
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <span class="material-symbols-outlined text-[20px]">person</span>
+                        </span>
+                        <input type="text" id="username" name="username" required autocomplete="username"
+                            class="w-full h-12 pl-12 pr-4 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-text-main placeholder:text-gray-400"
+                            placeholder="Enter your username" />
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-text-main mb-2" for="password">
+                        Password
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                        </span>
+                        <input type="password" id="password" name="password" required autocomplete="current-password"
+                            class="w-full h-12 pl-12 pr-12 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-text-main placeholder:text-gray-400"
+                            placeholder="Enter your password" />
+                        <button type="button" id="toggle-password"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                            <span class="material-symbols-outlined text-[20px]" id="password-icon">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center justify-between mb-8">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" id="remember"
+                            class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/20" />
+                        <span class="text-sm text-text-sub">Remember me</span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submit-btn"
+                    class="w-full h-12 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span id="btn-text">Sign In</span>
+                    <span id="btn-loading" class="hidden">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                    </span>
+                </button>
+            </form>
+
+            <!-- Demo Credentials -->
+            <div class="px-8 pb-8">
+                <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                    <p class="text-sm font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">info</span>
+                        Demo Accounts (Click to fill)
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-white rounded-lg p-2 cursor-pointer hover:bg-blue-100 transition-colors"
+                            onclick="fillCredentials('admin', '123456')">
+                            <p class="font-bold text-blue-900">Admin</p>
+                            <p class="text-blue-600">admin / 123456</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-2 cursor-pointer hover:bg-blue-100 transition-colors"
+                            onclick="fillCredentials('bao_ve', '123456')">
+                            <p class="font-bold text-blue-900">Guard</p>
+                            <p class="text-blue-600">bao_ve / 123456</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-2 cursor-pointer hover:bg-blue-100 transition-colors"
+                            onclick="fillCredentials('plant_manager', '123456')">
+                            <p class="font-bold text-blue-900">Plant Manager</p>
+                            <p class="text-blue-600">plant_manager / 123456</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-2 cursor-pointer hover:bg-blue-100 transition-colors"
+                            onclick="fillCredentials('manager', '123456')">
+                            <p class="font-bold text-blue-900">Manager</p>
+                            <p class="text-blue-600">manager / 123456</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-2 cursor-pointer hover:bg-blue-100 transition-colors"
+                            onclick="fillCredentials('hse_user', '123456')">
+                            <p class="font-bold text-blue-900">HSE User</p>
+                            <p class="text-blue-600">hse_user / 123456</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-2 cursor-pointer hover:bg-blue-100 transition-colors"
+                            onclick="fillCredentials('le_tan', '123456')">
+                            <p class="font-bold text-blue-900">Receptionist</p>
+                            <p class="text-blue-600">le_tan / 123456</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Footer -->
+            <p class="text-center text-text-sub text-sm mt-6">
+                &copy; 2024 Intersnack. Access Gate System v1.0
+            </p>
+        </div>
+
+        <!-- Scripts -->
+        <script src="/js/api-client.js"></script>
+        <script>
+            // Check if already logged in
+            if (GateAPI.isAuthenticated()) {
+                window.location.href = '/';
+            }
+
+            // Fill demo credentials
+            function fillCredentials(username, password) {
+                document.getElementById('username').value = username;
+                document.getElementById('password').value = password;
+            }
+
+            // Toggle password visibility
+            document.getElementById('toggle-password').addEventListener('click', function () {
+                const passwordInput = document.getElementById('password');
+                const icon = document.getElementById('password-icon');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.textContent = 'visibility_off';
+                } else {
+                    passwordInput.type = 'password';
+                    icon.textContent = 'visibility';
+                }
+            });
+
+            // Handle form submission
+            document.getElementById('login-form').addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+
+                const submitBtn = document.getElementById('submit-btn');
+                const btnText = document.getElementById('btn-text');
+                const btnLoading = document.getElementById('btn-loading');
+                const errorDiv = document.getElementById('error-message');
+                const errorText = document.getElementById('error-text');
+
+                // Show loading
+                submitBtn.disabled = true;
+                btnText.classList.add('hidden');
+                btnLoading.classList.remove('hidden');
+                errorDiv.classList.add('hidden');
+
+                try {
+                    const result = await GateAPI.Auth.login(username, password);
+
+                    if (result.success) {
+                        // Save user to localStorage
+                        GateAPI.Auth.setCurrentUser(result.data.user);
+
+                        // Show success and redirect
+                        btnText.textContent = 'Success!';
+                        btnText.classList.remove('hidden');
+                        btnLoading.classList.add('hidden');
+
+                        // Redirect based on role
+                        setTimeout(() => {
+                            const role = result.data.user.role;
+                            if (role === 'guard') {
+                                window.location.href = '/checkin';
+                            } else {
+                                window.location.href = '/';
+                            }
+                        }, 500);
+                    }
+                } catch (error) {
+                    // Show error
+                    errorText.textContent = error.message || 'Login failed. Please try again.';
+                    errorDiv.classList.remove('hidden');
+
+                    // Reset button
+                    submitBtn.disabled = false;
+                    btnText.classList.remove('hidden');
+                    btnLoading.classList.add('hidden');
+                }
+            });
+
+            // Allow Enter key to submit
+            document.getElementById('password').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('login-form').dispatchEvent(new Event('submit'));
+                }
+            });
+        </script>
+</body>
+
+</html>

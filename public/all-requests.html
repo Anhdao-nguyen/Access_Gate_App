@@ -64,6 +64,8 @@
             border-color: rgba(230, 50, 35, 0.2);
         }
     </style>
+    <!-- Auth Guard - must be before body -->
+    <script src="/js/auth-guard.js"></script>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-text-main antialiased overflow-x-hidden">
@@ -116,17 +118,11 @@
                 <div class="w-px h-8 bg-border-color"></div>
                 <div class="flex items-center gap-3 cursor-pointer group" data-open-profile>
                     <div class="text-right hidden sm:block">
-                        <p class="text-sm font-semibold text-text-main dark:text-white leading-tight">Admin User</p>
-                        <p class="text-xs text-text-sub">Security Manager</p>
+                        <p class="text-sm font-semibold text-text-main dark:text-white leading-tight" data-user-name>
+                            Loading...</p>
+                        <p class="text-xs text-text-sub" data-user-role>User</p>
                     </div>
-                    <div class="relative">
-                        <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-border-color group-hover:ring-primary group-hover:scale-105 transition-all"
-                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkIETe0nx6serWlZSHNCb-fPbFfejUNyNhHkg_ewUpIPZGzxYgeo94s3fatn6ANAIvJuehTqeC5CmS8MIwsHcLgh3Gbyw1HcB4NH7_NKrH3YNlNkNrkDisK0z3XpZpeBoK40f0UcyAW40BFNfYNcFPrWuzOWESQ0I9AkiuHpFYMg2e1xD_BcxoOcCm2m3aGLNeA_80CA2FL07KYXrDFy3R4O26zVYSjv22KjTt2OPPDxaCHbgwn9BAlMUoccRp6Fp9AMR7IPO_0FWN");'>
-                        </div>
-                        <div
-                            class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-[#24261a]">
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </header>
@@ -392,8 +388,9 @@
     <!-- Quick Navigation Menu -->
     <script src="/js/quick-navigation.js"></script>
 
-    <!-- All Requests Page Script -->
-    <script src="/js/all-requests.js"></script>
+    <!-- API Client & Page Script -->
+    <script src="/js/api-client.js"></script>
+    <script src="/js/pages/all-requests.js"></script>
 </body>
 
 </html>

@@ -163,29 +163,58 @@ class AllRequestsPage {
         this.showLoading();
 
         try {
-            // Simulate API call - Replace with actual endpoint
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // Fetch directly from API
+            const response = await GateAPI.Visitor.getAll({
+                ...this.filters,
+                page: this.currentPage,
+                limit: this.perPage
+            });
 
-            // Mock data
-            const mockData = this.getMockData();
+            if (!response.success) throw new Error(response.error);
 
-            // Apply filters
-            let filtered = this.applyFilters(mockData);
+            const apiData = response.data;
+            this.totalCount = response.pagination.total;
 
-            // Apply sorting
-            filtered = this.applySorting(filtered);
+            // Map API data to UI model
+            const mappedData = apiData.map(r => {
+                // Determine site name/id mapping
+                let siteId = 'long_an'; // default
+                let siteName = 'Long An';
 
-            // Calculate pagination
-            this.totalCount = filtered.length;
-            const start = (this.currentPage - 1) * this.perPage;
-            const end = start + this.perPage;
-            const paginatedData = filtered.slice(start, end);
+                if (r.factoryId === 'FAC001') { siteName = 'Long An'; siteId = 'long_an'; }
+                else if (r.factoryId === 'FAC002') { siteName = 'Tay Ninh'; siteId = 'tay_ninh'; }
+                else if (r.factoryId === 'FAC003') { siteName = 'Phan Thiet'; siteId = 'phan_thiet'; }
+
+                return {
+                    id: r.id,
+                    created_at: r.createdAt,
+                    site_id: siteId,
+                    site_name: siteName,
+                    type: r.type,
+                    status: r.status,
+                    requester: {
+                        name: r.host?.name || 'Unknown',
+                        position: r.host?.department || 'Staff'
+                    },
+                    subject: {
+                        name: r.visitors?.[0]?.fullName || 'Unknown Visitor',
+                        company: r.visitors?.[0]?.company || 'Unknown Company'
+                    },
+                    scheduled_at: `${r.scheduledDate}T${r.scheduledTime || '00:00'}`
+                };
+            });
 
             // Update UI
-            this.allRequests = paginatedData;
-            this.renderTable(paginatedData);
+            this.allRequests = mappedData;
+            this.renderTable(mappedData);
             this.renderPagination();
-            this.updateKPIs(mockData);
+
+            // For KPIs we might need a separate stats call or just approximate from current page (not ideal but ok for now)
+            // Or better, call getStats if available. 
+            // For now, let's just use the current page mapped data for KPIs to avoid errors, 
+            // knowing it's only accurate for the current view or we need a stats endpoint integration.
+            this.updateKPIs(mappedData);
+
             this.updateActiveFilters();
 
         } catch (error) {
