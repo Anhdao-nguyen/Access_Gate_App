@@ -2,11 +2,17 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
+const cors = require('cors');
+const helmet = require('helmet');
 
 const app = express();
-const PORT = process.env.PORT || 50003;
+const PORT = process.env.PORT || 50004;
 
 // --- MIDDLEWARES ---
+app.use(helmet({
+    contentSecurityPolicy: false // Disable for development
+}));
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -16,17 +22,30 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- API ROUTES ---
+// Import API routes
+const apiRoutes = require('./src/api/routes');
+
+// Mount API routes
+app.use('/api/v1', apiRoutes);
+
+// Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'UP',
         timestamp: new Date(),
         service: 'GateKeeper Access Node',
-        environment: process.env.NODE_ENV || 'development'
+        environment: process.env.NODE_ENV || 'development',
+        apiVersion: 'v1'
     });
 });
 
 // --- PAGE ROUTING ---
 // Explicit routes to map clean URLs to HTML files
+
+// 0. Login Page -> login.html
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
 
 // 1. Home Page / Dashboard -> home.html
 app.get('/', (req, res) => {
@@ -41,6 +60,11 @@ app.get('/checkin', (req, res) => {
 // 3. Create Request Page -> request.html
 app.get('/request', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'request.html'));
+});
+
+// 4. All Requests Page -> all-requests.html
+app.get('/all-requests', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'all-requests.html'));
 });
 
 // Fallback for SPA-like behavior or 404
